@@ -42,7 +42,7 @@ python main.py
 
 ## Contributing
 
-Created affectionately by the **font-mod Development Team**.
+Created affectionately by **Nexus Tribarixa**.
 Contributions, issues, and feature requests are welcome!
 
 ---
