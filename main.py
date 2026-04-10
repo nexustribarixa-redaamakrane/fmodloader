@@ -154,7 +154,7 @@ def main():
     app = QApplication(sys.argv)
     app.setApplicationName("fModLoader")
     app.setApplicationVersion("1.0.1 Beta")
-    app.setOrganizationName("font-mod Development Team")
+    app.setOrganizationName("Nexus Tribarixa")
 
     # App-wide stylesheet
     app.setStyleSheet("""
