@@ -258,7 +258,7 @@ class AboutDialog(QDialog):
         credit.setStyleSheet("color: #dddddd; font-size: 12px; font-family: 'Segoe UI', Arial;")
         layout.addWidget(credit)
 
-        copy_label = QLabel("(c) 2026 font-mod Development Team.")
+        copy_label = QLabel("(c) 2026 Nexus Tribarixa.")
         copy_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         copy_label.setStyleSheet("color: #cccccc; font-size: 11px; font-family: 'Segoe UI', Arial;")
         layout.addWidget(copy_label)
