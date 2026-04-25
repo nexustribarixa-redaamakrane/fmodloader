@@ -176,7 +176,7 @@ class AboutDialog(QDialog):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        version_label = QLabel('v1.0.4 BETA\n"Project Aurion"')
+        version_label = QLabel('v1.0.4 BETA\n"Project Vectoris"')
         version_label.setStyleSheet("""
             color: #ffcccc;
             font-size: 13px;
@@ -235,7 +235,7 @@ class AboutDialog(QDialog):
         """
 
         desc1 = QLabel(
-            "fModLoader: The official Font Modding Tool. (v1.0.4 Beta 'Project Aurion').\n"
+            "fModLoader: The official Font Modding Tool. (v1.0.4 Beta 'Project Vectoris').\n"
             "Designed for the font-mod community to manage and apply Font compatibility.\n"
             "Developed by the font-mod community, with dedication and precision."
         )
