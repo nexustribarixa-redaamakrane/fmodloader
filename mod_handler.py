@@ -1,7 +1,7 @@
 """
 mod_handler.py
 Handles reading, parsing, and extracting .ttfm and .otfm font mod packages.
-These are ZIP archives containing a metadata JSON/XML and SVG glyph files.
+These are ZIP archives containing a metadata JSON/XML and UFO-like .glif glyph files.
 """
 
 import os
@@ -19,8 +19,8 @@ class ModMetadata:
     description: str = ""
     target_family: str = ""
     em_box: dict = field(default_factory=dict)
-    # Maps unicode codepoint (as str "0x0041") -> svg filename inside zip
-    glyph_map: dict = field(default_factory=dict)
+    # Maps unicode codepoint (as str "0x0041") -> .glif filename inside zip
+    glif_map: dict = field(default_factory=dict)
     file_path: str = ""
 
     def display_name(self) -> str:
@@ -72,7 +72,7 @@ def load_mod(path: str) -> tuple[ModMetadata | None, str]:
                 meta.description = data.get("description", meta.description)
                 meta.target_family = data.get("target_family", meta.target_family)
                 meta.em_box = data.get("em_box", {})
-                meta.glyph_map = data.get("glyph_map", {})
+                meta.glif_map = data.get("glif_map", data.get("glyph_map", {}))
             elif meta_file.endswith(".xml"):
                 meta = _parse_xml_metadata(zf.read(meta_file), path)
 
@@ -106,36 +106,35 @@ def _parse_xml_metadata(xml_bytes: bytes, file_path: str) -> ModMetadata:
         if glyphs_el is not None:
             for glyph in glyphs_el.findall("glyph"):
                 cp = glyph.get("codepoint", "")
-                svg = glyph.get("svg", "")
-                if cp and svg:
-                    meta.glyph_map[cp] = svg
+                glif_file = glyph.get("glif", glyph.get("svg", ""))
+                if cp and glif_file:
+                    meta.glif_map[cp] = glif_file
     except Exception:
         pass
     return meta
 
 
-def extract_svgs(mod_path: str, glyph_map: dict) -> dict[int, str]:
+def extract_glifs(mod_path: str, glif_map: dict) -> dict[int, str]:
     """
-    Extract SVG content from a mod's ZIP archive based on glyph_map.
-    glyph_map: {codepoint_str -> svg_filename}
-    Returns: {codepoint_int -> svg_string}
+    Extract .glif content from a mod's ZIP archive based on glif_map.
+    glif_map: {codepoint_str -> glif_filename}
+    Returns: {codepoint_int -> glif_string}
     """
     result = {}
     if not is_valid_mod_file(mod_path):
         return result
     try:
         with zipfile.ZipFile(mod_path, "r") as zf:
-            for cp_str, svg_filename in glyph_map.items():
-                if svg_filename in zf.namelist():
-                    svg_data = zf.read(svg_filename).decode("utf-8")
-                    # Support "0x0041" hex or "65" decimal codepoint formats
+            for cp_str, glif_filename in glif_map.items():
+                if glif_filename in zf.namelist():
+                    glif_data = zf.read(glif_filename).decode("utf-8")
                     if cp_str.startswith("0x") or cp_str.startswith("0X"):
                         cp_int = int(cp_str, 16)
                     else:
                         cp_int = int(cp_str)
-                    result[cp_int] = svg_data
+                    result[cp_int] = glif_data
     except Exception as e:
-        print(f"[ModHandler] SVG extraction error: {e}")
+        print(f"[ModHandler] .glif extraction error: {e}")
     return result
 
 
@@ -170,37 +169,45 @@ def create_demo_mod(output_path: str) -> bool:
     Writes a ZIP with metadata.json and one SVG placeholder.
     """
     metadata = {
-        "name": "Demo Mod",
+        "name": "Demo Mod (GLIF)",
         "version": "1.0",
         "author": "fModLoader Dev Team",
         "description": "A minimal demo mod for testing purposes.",
         "target_family": "Any",
-        "em_box": {
-            "x_height": 500,
-            "ascender": 800,
-            "descender": -200,
-            "units_per_em": 1000
-        },
-        "glyph_map": {
-            "0x0041": "glyphs/A.svg",
-            "0x0042": "glyphs/B.svg"
+        "glif_map": {
+            "0x0041": "glyphs/A.glif",
+            "0x0042": "glyphs/B.glif"
         }
     }
-    svg_a = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <path d="M 100 800 L 500 100 L 900 800 L 750 800 L 500 300 L 250 800 Z
-           M 200 550 L 800 550 L 800 650 L 200 650 Z"/>
-</svg>"""
-    svg_b = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <path d="M 100 100 L 100 800 L 550 800 Q 800 800 800 600 Q 800 500 650 450
-           Q 800 400 800 250 Q 800 100 550 100 Z
-           M 250 450 L 250 680 L 520 680 Q 660 680 660 565 Q 660 450 520 450 Z
-           M 250 200 L 250 380 L 510 380 Q 640 380 640 290 Q 640 200 510 200 Z"/>
-</svg>"""
+    glif_a = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<glyph name=\"A\" format=\"2\">
+  <advance width=\"600\"/>
+  <unicode hex=\"0041\"/>
+  <outline>
+    <contour>
+      <point x=\"200\" y=\"0\" type=\"line\"/>
+      <point x=\"300\" y=\"700\" type=\"line\"/>
+      <point x=\"400\" y=\"0\" type=\"line\"/>
+    </contour>
+  </outline>
+</glyph>"""
+    glif_b = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<glyph name=\"B\" format=\"2\">
+  <advance width=\"600\"/>
+  <unicode hex=\"0042\"/>
+  <outline>
+    <contour>
+      <point x=\"200\" y=\"0\" type=\"line\"/>
+      <point x=\"500\" y=\"350\" type=\"curve\"/>
+      <point x=\"200\" y=\"700\" type=\"line\"/>
+    </contour>
+  </outline>
+</glyph>"""
     try:
         with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zf:
             zf.writestr("metadata.json", json.dumps(metadata, indent=2))
-            zf.writestr("glyphs/A.svg", svg_a)
-            zf.writestr("glyphs/B.svg", svg_b)
+            zf.writestr("glyphs/A.glif", glif_a)
+            zf.writestr("glyphs/B.glif", glif_b)
         return True
     except Exception as e:
         print(f"[ModHandler] Failed to create demo mod: {e}")

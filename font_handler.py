@@ -135,11 +135,11 @@ def has_backup(font_path: str) -> bool:
     return os.path.exists(font_path + BACKUP_SUFFIX)
 
 
-def apply_mod_glyphs(font_path: str, glyph_map: dict) -> tuple[bool, str]:
+def apply_mod_glyphs(font_path: str, glif_map: dict) -> tuple[bool, str]:
     """
-    Apply SVG glyphs from a mod to a modcompat font.
+    Apply GLIF glyphs from a mod to a modcompat font.
 
-    glyph_map: dict mapping unicode codepoint (int) -> SVG string content
+    glif_map: dict mapping unicode codepoint (int) -> GLIF string content
     Returns (success: bool, message: str)
     """
     if not FONTTOOLS_AVAILABLE:
@@ -155,23 +155,23 @@ def apply_mod_glyphs(font_path: str, glyph_map: dict) -> tuple[bool, str]:
         is_otf = "CFF " in font or "CFF2" in font
 
         patched = 0
-        for codepoint, svg_data in glyph_map.items():
+        for codepoint, glif_data in glif_map.items():
             cp = int(codepoint)
             glyph_name = cmap.get(cp)
             if glyph_name is None:
                 # Add new glyph name
                 glyph_name = f"uni{cp:04X}"
 
-            # For SVG glyphs, we inject them as SVG table entries
+            # For now, treat GLIF data as payload placeholder
             if "SVG " not in font:
-                _inject_svg_table(font, cp, svg_data, glyph_name)
+                _inject_svg_table(font, cp, glif_data, glyph_name)
             else:
                 svg_table = font["SVG "]
-                # Append or replace SVG document
+                # Append or replace document
                 glyph_order = font.getGlyphOrder()
                 glyph_idx = glyph_order.index(glyph_name) if glyph_name in glyph_order else len(glyph_order)
                 existing = {doc[1]: doc for doc in svg_table.docList}
-                existing[glyph_idx] = (svg_data.encode("utf-8"), glyph_idx, glyph_idx)
+                existing[glyph_idx] = (glif_data.encode("utf-8"), glyph_idx, glyph_idx)
                 svg_table.docList = list(existing.values())
             patched += 1
 

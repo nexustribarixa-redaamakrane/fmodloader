@@ -5,7 +5,7 @@ Quick CLI helper to convert standard font(s) into .modcompat fonts for fModLoade
 Usage:
     python make_modcompat.py                         # converts popular Windows fonts
     python make_modcompat.py C:/path/to/myfont.ttf  # converts a specific font
-    python make_modcompat.py --all-windows           # converts ALL fonts in C:\Windows\Fonts
+    python make_modcompat.py --all-windows           # converts ALL fonts in C:\\Windows\\Fonts
 """
 
 import sys

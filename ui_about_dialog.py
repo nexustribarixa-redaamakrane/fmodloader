@@ -3,9 +3,9 @@ ui_about_dialog.py
 The About dialog for fModLoader, styled to match the reference screenshot:
   - Dark red/maroon gradient background
   - Shield + heartbeat logo on the left
-  - "Font Mod Loader" title, v1.0.1 BETA, Project Aurion subtitle
+  - "Font Mod Loader" title, v1.0.4 BETA, Project Aurion subtitle
   - Description paragraphs
-  - Updated GitHub link and removed Discord
+  - Three link-style buttons at bottom
 """
 
 from PyQt6.QtWidgets import (
@@ -82,7 +82,9 @@ class ShieldWidget(QWidget):
             p.drawLine(pts[i], pts[i + 1])
 
         # Letter "f"
-        f_font = QFont("Georgia", int(h * 0.32), QFont.Weight.Bold)
+        f_font = QFont("Georgia")
+        f_font.setPixelSize(max(1, int(h * 0.32)))
+        f_font.setWeight(QFont.Weight.Bold)
         f_font.setItalic(True)
         p.setFont(f_font)
         p.setPen(QColor("white"))
@@ -106,7 +108,7 @@ class LinkButton(QPushButton):
                 background: transparent;
                 border: 1px solid #888888;
                 border-radius: 4px;
-                padding: 6px 14px;
+                padding: 4px 10px;
                 font-size: 11px;
                 font-family: 'Segoe UI', Arial, sans-serif;
             }
@@ -142,16 +144,22 @@ class AboutDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
-        # Root layout
+        # Root layout with margin so background shows as border
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(0)
 
+        # Inner container (we paint background on the dialog itself)
         inner = QWidget()
         inner.setObjectName("aboutInner")
         inner.setStyleSheet("""
-            #aboutInner { background: transparent; }
-            QLabel { background: transparent; color: #eeeeee; }
+            #aboutInner {
+                background: transparent;
+            }
+            QLabel {
+                background: transparent;
+                color: #eeeeee;
+            }
         """)
 
         layout = QVBoxLayout(inner)
@@ -168,7 +176,7 @@ class AboutDialog(QDialog):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        version_label = QLabel('v1.0.1 BETA\n"Project Aurion"')
+        version_label = QLabel('v1.0.4 BETA\n"Project Aurion"')
         version_label.setStyleSheet("""
             color: #ffcccc;
             font-size: 13px;
@@ -190,12 +198,16 @@ class AboutDialog(QDialog):
         """)
         app_title.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
+        # Arrange version top-right, title bottom
         title_inner = QHBoxLayout()
+        title_inner.setContentsMargins(0, 0, 0, 0)
+
         left_title = QVBoxLayout()
         left_title.addStretch()
         left_title.addWidget(app_title)
 
         right_version = QVBoxLayout()
+        right_version.setContentsMargins(0, 0, 0, 0)
         right_version.addWidget(version_label)
         right_version.addStretch()
 
@@ -204,6 +216,7 @@ class AboutDialog(QDialog):
         title_inner.addLayout(right_version)
 
         title_col.addLayout(title_inner)
+
         top_row.addLayout(title_col, 1)
         layout.addLayout(top_row)
 
@@ -222,7 +235,7 @@ class AboutDialog(QDialog):
         """
 
         desc1 = QLabel(
-            "fModLoader: The official Font Modding Tool. (v1.0.1 Beta 'Project Aurion').\n"
+            "fModLoader: The official Font Modding Tool. (v1.0.4 Beta 'Project Aurion').\n"
             "Designed for the font-mod community to manage and apply Font compatibility.\n"
             "Developed by the font-mod community, with dedication and precision."
         )
@@ -256,12 +269,11 @@ class AboutDialog(QDialog):
 
         # ── Bottom link buttons ───────────────────────────────────────────────
         btn_row = QHBoxLayout()
-        btn_row.setSpacing(15)
+        btn_row.setSpacing(10)
         btn_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Corrected personal GitHub handle
-        github_url = "https://github.com/nexustribarixa-redaamakrane/fmodloader"
-        btn_source = LinkButton("[View Source Code on GitHub]", github_url)
+        btn_source = LinkButton("[View Source Code on GitHub]",
+                                "https://github.com/nexustribarixa-redaamakrane/fmodloader")
         btn_license = LinkButton("[License Details]",
                                  "https://www.gnu.org/licenses/gpl-3.0.html")
 
@@ -278,6 +290,7 @@ class AboutDialog(QDialog):
 
         w, h = self.width(), self.height()
 
+        # Main background gradient
         grad = QLinearGradient(0, 0, 0, h)
         grad.setColorAt(0.0, QColor("#5a0000"))
         grad.setColorAt(0.4, QColor("#7a0808"))
@@ -285,7 +298,10 @@ class AboutDialog(QDialog):
         grad.setColorAt(1.0, QColor("#3d0000"))
         p.fillRect(self.rect(), QBrush(grad))
 
-        wm_font = QFont("Georgia", 72, QFont.Weight.Bold)
+        # Faint 'f' watermark characters
+        wm_font = QFont("Georgia")
+        wm_font.setPixelSize(72)
+        wm_font.setWeight(QFont.Weight.Bold)
         wm_font.setItalic(True)
         p.setFont(wm_font)
         p.setPen(QColor(255, 255, 255, 12))
@@ -293,6 +309,7 @@ class AboutDialog(QDialog):
         for (x, y) in positions:
             p.drawText(x, y, "f")
 
+        # Heartbeat line watermark across middle-ish area
         p.setPen(QPen(QColor(255, 255, 255, 18), 1.5))
         y_base = h * 0.48
         pts = []

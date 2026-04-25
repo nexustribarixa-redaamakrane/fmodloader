@@ -1,17 +1,37 @@
 """
 main.py
-Entry point for fModLoader v1.0.1 Beta.
+Entry point for fModLoader v1.0.4 Beta.
 """
 
 import sys
 import os
+import traceback
+from PyQt6.QtWidgets import QApplication, QMessageBox, QSplashScreen, QLabel
+from PyQt6.QtCore import Qt
 
 # Ensure the app directory is in sys.path
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 if APP_DIR not in sys.path:
     sys.path.insert(0, APP_DIR)
 
-from PyQt6.QtWidgets import QApplication, QSplashScreen, QLabel
+def exception_hook(exctype, value, tb):
+    """Global exception handler to prevent silent crashes and provide diagnostics."""
+    error_msg = "".join(traceback.format_exception(exctype, value, tb))
+    print(error_msg) # Still log to console
+    
+    # Try to show a dialog
+    dialog = QMessageBox()
+    dialog.setIcon(QMessageBox.Icon.Critical)
+    dialog.setWindowTitle("Application Error — Diagnostic Report")
+    dialog.setText("An unexpected error occurred within fModLoader.")
+    dialog.setInformativeText("A detailed diagnostic report has been generated. Please review the technical details below.")
+    dialog.setDetailedText(error_msg)
+    dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
+    dialog.exec()
+
+# Install the hook
+sys.excepthook = exception_hook
+
 from PyQt6.QtGui import (
     QIcon, QPixmap, QPainter, QColor, QLinearGradient,
     QBrush, QPen, QFont, QPainterPath, QPolygonF
@@ -51,7 +71,9 @@ def _build_icon_pixmap(size: int = 64) -> QPixmap:
     p.drawPath(shield)
 
     # 'f' letter
-    f_font = QFont("Georgia", max(8, size // 3), QFont.Weight.Bold)
+    f_font = QFont("Georgia")
+    f_font.setPixelSize(max(8, size // 3))
+    f_font.setWeight(QFont.Weight.Bold)
     f_font.setItalic(True)
     p.setFont(f_font)
     p.setPen(QColor("white"))
@@ -88,7 +110,9 @@ def _build_splash() -> QSplashScreen:
     p.drawRoundedRect(2, 2, w - 4, h - 4, 10, 10)
 
     # Faint 'f' watermarks
-    wm_font = QFont("Georgia", 60, QFont.Weight.Bold)
+    wm_font = QFont("Georgia")
+    wm_font.setPixelSize(60)
+    wm_font.setWeight(QFont.Weight.Bold)
     wm_font.setItalic(True)
     p.setFont(wm_font)
     p.setPen(QColor(255, 255, 255, 12))
@@ -112,26 +136,31 @@ def _build_splash() -> QSplashScreen:
         p.drawLine(pts[i], pts[i + 1])
 
     # Project title
-    title_font = QFont("Arial Black", 26, QFont.Weight.Black)
+    title_font = QFont("Arial Black")
+    title_font.setPixelSize(26)
+    title_font.setWeight(QFont.Weight.Black)
     p.setFont(title_font)
     p.setPen(QColor("white"))
     p.drawText(0, 30, w, 70, Qt.AlignmentFlag.AlignCenter, "fModLoader")
 
-    sub_font = QFont("Segoe UI", 13)
+    sub_font = QFont("Segoe UI")
+    sub_font.setPixelSize(13)
     p.setFont(sub_font)
     p.setPen(QColor("#ffcccc"))
     p.drawText(0, 95, w, 34, Qt.AlignmentFlag.AlignCenter,
-               'v1.0.1 BETA  •  "Project Aurion"')
+               'v1.0.4 BETA  •  "Project Vectoris"')
 
     # Loading line
     p.setPen(QColor(255, 255, 255, 140))
-    load_font = QFont("Segoe UI", 10)
+    load_font = QFont("Segoe UI")
+    load_font.setPixelSize(10)
     p.setFont(load_font)
     p.drawText(0, 155, w, 28, Qt.AlignmentFlag.AlignCenter,
                "Loading font modding engine…")
 
     p.setPen(QColor(255, 220, 220, 100))
-    small_font = QFont("Segoe UI", 8)
+    small_font = QFont("Segoe UI")
+    small_font.setPixelSize(8)
     p.setFont(small_font)
     p.drawText(0, 210, w, 22, Qt.AlignmentFlag.AlignCenter,
                "Open-source • Vibecoded • Community-driven")
@@ -153,7 +182,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setApplicationName("fModLoader")
-    app.setApplicationVersion("1.0.1 Beta")
+    app.setApplicationVersion("1.0.4 Beta")
     app.setOrganizationName("Nexus Tribarixa")
 
     # App-wide stylesheet

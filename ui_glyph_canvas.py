@@ -410,7 +410,8 @@ class GlyphCanvas(QWidget):
             p.setPen(QPen(color, 1, Qt.PenStyle.DashLine))
             p.drawLine(a, b)
             p.setPen(color)
-            font = QFont("Segoe UI", 8)
+            font = QFont("Segoe UI")
+            font.setPixelSize(8)
             p.setFont(font)
             p.drawText(int(a.x()) + 4, int(a.y()) - 3, label)
 

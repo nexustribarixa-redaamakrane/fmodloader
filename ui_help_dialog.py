@@ -2,7 +2,6 @@
 ui_help_dialog.py
 Help / Manual dialog for fModLoader.
 Describes features, open-source status, beta notice, and community call-to-action.
-Updated: GitHub link corrected and Discord removed.
 """
 
 from PyQt6.QtWidgets import (
@@ -46,9 +45,9 @@ HELP_SECTIONS = [
         "body": (
             "1. Select Font File — Browse or choose from the dropdown a .modcompat font.\n"
             "2. Select Mod File  — Browse or choose a .ttfm or .otfm mod package.\n"
-            "3. Click APPLY      — The app will extract SVGs from the mod and patch "
+            "3. Click APPLY     — The app will extract SVGs from the mod and patch "
             "them into the target font's codepoints using fontTools.\n"
-            "4. Revert           — Select 'No Mod' in the Mod dropdown and click APPLY "
+            "4. Revert          — Select 'No Mod' in the Mod dropdown and click APPLY "
             "to restore the original glyphs from the automatic backup.\n\n"
             "Tip: Use Tools → Create Modcompat Font to convert any font into a "
             "mod-compatible version."
@@ -175,6 +174,7 @@ class HelpDialog(QDialog):
         c_lay.setSpacing(20)
 
         for section in HELP_SECTIONS:
+            # Section title
             stitle = QLabel(section["title"])
             stitle.setStyleSheet("""
                 color: #8b0000;
@@ -186,6 +186,7 @@ class HelpDialog(QDialog):
             """)
             c_lay.addWidget(stitle)
 
+            # Section body
             sbody = QLabel(section["body"])
             sbody.setWordWrap(True)
             sbody.setStyleSheet("""
@@ -246,10 +247,8 @@ class HelpDialog(QDialog):
                 btn.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
             return btn
 
-        # Updated GitHub Link
-        personal_github = "https://github.com/nexustribarixa-redaamakrane/fmodloader"
-        btn_github = make_footer_btn("GitHub Repository", personal_github)
-        
+        btn_github = make_footer_btn("GitHub Repository",
+                                     "https://github.com/nexustribarixa-redaamakrane/fmodloader")
         btn_close = make_footer_btn("Close", primary=True)
         btn_close.clicked.connect(self.accept)
 

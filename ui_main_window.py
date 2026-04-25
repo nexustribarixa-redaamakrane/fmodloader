@@ -1,6 +1,6 @@
 """
 ui_main_window.py
-Main application window for fModLoader v1.0.1 Beta.
+Main application window for fModLoader v1.0.4 Beta.
 Matches the reference screenshot:
   - Yellow/black hazard tape banner ("UNDER CONSTRUCTION / BETA")
   - Red menu bar: File | Mods | Tools | Settings | Help
@@ -18,9 +18,10 @@ from pathlib import Path
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QComboBox, QFrame, QStatusBar,
-    QFileDialog, QMenuBar, QMenu, QMessageBox, QSizePolicy,
+    QMenuBar, QMenu, QMessageBox, QSizePolicy,
     QProgressDialog
 )
+from ui_file_dialog import FMLFileDialog
 from PyQt6.QtGui import (
     QPainter, QColor, QLinearGradient, QBrush, QPen,
     QFont, QFontMetrics, QPainterPath, QCursor, QIcon,
@@ -36,10 +37,11 @@ from font_handler import (
     create_modcompat_font, is_fonttools_available
 )
 from mod_handler import (
-    scan_for_mods, load_mod, extract_svgs, create_demo_mod, is_valid_mod_file
+    scan_for_mods, load_mod, extract_glifs, create_demo_mod, is_valid_mod_file
 )
 from ui_about_dialog import AboutDialog
 from ui_help_dialog import HelpDialog
+from ui_font_editor import FontEditorWindow
 
 
 # ───────────────────────────── Directories ───────────────────────────────────
@@ -88,7 +90,9 @@ class HazardTapeWidget(QWidget):
             p.drawPolygon(poly)
 
         # Overlay text on tape
-        font = QFont("Arial Black", 11, QFont.Weight.Black)
+        font = QFont("Arial Black")
+        font.setPixelSize(11)
+        font.setWeight(QFont.Weight.Black)
         font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, 3)
         p.setFont(font)
 
@@ -270,7 +274,9 @@ class ApplyButton(QPushButton):
         p.setPen(QPen(QColor(255, 255, 255, 100), 1))
         p.drawEllipse(QPointF(cx, cy), circle_r, circle_r)
 
-        f_font = QFont("Georgia", 18, QFont.Weight.Bold)
+        f_font = QFont("Georgia")
+        f_font.setPixelSize(18)
+        f_font.setWeight(QFont.Weight.Bold)
         f_font.setItalic(True)
         p.setFont(f_font)
         p.setPen(QColor("white"))
@@ -278,7 +284,9 @@ class ApplyButton(QPushButton):
                    Qt.AlignmentFlag.AlignCenter, "f")
 
         # Label
-        lbl_font = QFont("Arial Black", 18, QFont.Weight.Black)
+        lbl_font = QFont("Arial Black")
+        lbl_font.setPixelSize(18)
+        lbl_font.setWeight(QFont.Weight.Black)
         lbl_font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, 3)
         p.setFont(lbl_font)
         p.setPen(QColor("white"))
@@ -373,7 +381,9 @@ class MainBackground(QWidget):
         p.fillRect(self.rect(), QBrush(grad))
 
         # Faint 'f' watermarks
-        wm_font = QFont("Georgia", 80, QFont.Weight.Bold)
+        wm_font = QFont("Georgia")
+        wm_font.setPixelSize(80)
+        wm_font.setWeight(QFont.Weight.Bold)
         wm_font.setItalic(True)
         p.setFont(wm_font)
         p.setPen(QColor(180, 0, 0, 14))
@@ -435,14 +445,14 @@ class ApplyWorker(QThread):
             self.finished.emit(False, "Unable to create backup. Aborting for safety.")
             return
 
-        self.progress.emit("Extracting SVG glyphs...")
-        svg_map = extract_svgs(self.mod_path, meta.glyph_map)
-        if not svg_map:
+        self.progress.emit("Extracting GLIF glyphs...")
+        glif_map = extract_glifs(self.mod_path, meta.glif_map)
+        if not glif_map:
             self.finished.emit(False, "No glyph data found in mod package.")
             return
 
-        self.progress.emit(f"Patching {len(svg_map)} glyph(s) into font...")
-        ok, msg = apply_mod_glyphs(self.font_path, svg_map)
+        self.progress.emit(f"Patching {len(glif_map)} glyph(s) into font...")
+        ok, msg = apply_mod_glyphs(self.font_path, glif_map)
         self.finished.emit(ok, msg)
 
 
@@ -451,7 +461,7 @@ class ApplyWorker(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("fModLoader v1.0.1 Beta")
+        self.setWindowTitle("fModLoader v1.0.4 Beta")
         self.setMinimumSize(800, 500)
         self.resize(920, 540)
 
@@ -459,6 +469,7 @@ class MainWindow(QMainWindow):
         self._font_path: str | None = None
         self._mod_path: str | None = None
         self._worker: ApplyWorker | None = None
+        self._untitled_counter = 0
 
         self._build_menu()
         self._build_ui()
@@ -514,32 +525,42 @@ class MainWindow(QMainWindow):
 
         # File
         file_menu = mb.addMenu("File")
-        file_menu.addAction("Open Font File…", self._browse_font)
-        file_menu.addAction("Open Mod File…", self._browse_mod)
+        act_open_editor = file_menu.addAction("Open Glyph / Font Editor...", self._open_glyph_editor)
+        act_open_editor.setShortcut("Ctrl+E")
         file_menu.addSeparator()
-        file_menu.addAction("Exit", self.close)
+        act_exit = file_menu.addAction("Exit", self.close)
+        act_exit.setShortcut("Alt+F4")
 
         # Mods
         mods_menu = mb.addMenu("Mods")
-        mods_menu.addAction("Refresh Mod List", self._refresh_mod_list)
-        mods_menu.addAction("Create Demo Mod…", self._action_create_demo_mod)
-        mods_menu.addAction("Open Mods Folder", lambda: os.startfile(str(MODS_DIR)))
+        act_refresh_mods = mods_menu.addAction("Refresh Mod List", self._refresh_mod_list)
+        act_refresh_mods.setShortcut("Ctrl+Shift+M")
+        act_demo = mods_menu.addAction("Create Demo Mod…", self._action_create_demo_mod)
+        act_demo.setShortcut("Ctrl+Shift+D")
+        act_open_mods_dir = mods_menu.addAction("Open Mods Folder", lambda: os.startfile(str(MODS_DIR)))
+        act_open_mods_dir.setShortcut("Ctrl+Shift+O")
 
         # Tools
         tools_menu = mb.addMenu("Tools")
-        tools_menu.addAction("Create Modcompat Font…", self._action_create_modcompat)
-        tools_menu.addAction("Refresh Font List", self._refresh_font_list)
-        tools_menu.addAction("Open Fonts Folder", lambda: os.startfile(str(FONTS_DIR)))
+        act_create_compat = tools_menu.addAction("Create Modcompat Font…", self._action_create_modcompat)
+        act_create_compat.setShortcut("Ctrl+Shift+C")
+        act_refresh_fonts = tools_menu.addAction("Refresh Font List", self._refresh_font_list)
+        act_refresh_fonts.setShortcut("Ctrl+R")
+        act_open_fonts_dir = tools_menu.addAction("Open Fonts Folder", lambda: os.startfile(str(FONTS_DIR)))
+        act_open_fonts_dir.setShortcut("Ctrl+Shift+F")
 
         # Settings
         settings_menu = mb.addMenu("Settings")
-        settings_menu.addAction("Preferences…", self._action_preferences)
+        act_prefs = settings_menu.addAction("Preferences…", self._action_preferences)
+        act_prefs.setShortcut("Ctrl+,")
 
         # Help
         help_menu = mb.addMenu("Help")
-        help_menu.addAction("Help & Manual", self._show_help)
+        act_help = help_menu.addAction("Help & Manual", self._show_help)
+        act_help.setShortcut("F1")
         help_menu.addSeparator()
-        help_menu.addAction("About fModLoader", self._show_about)
+        act_about = help_menu.addAction("About fModLoader", self._show_about)
+        act_about.setShortcut("Ctrl+Shift+A")
 
     # ── Central Widget UI ─────────────────────────────────────────────────────
 
@@ -562,7 +583,7 @@ class MainWindow(QMainWindow):
         tbl.setContentsMargins(20, 0, 20, 0)
         tbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        app_lbl = QLabel("fModLoader — BETA VERSION 1.0.1")
+        app_lbl = QLabel("fModLoader — BETA VERSION 1.0.4")
         app_lbl.setStyleSheet("""
             color: #1a1a1a;
             font-size: 22px;
@@ -596,6 +617,7 @@ class MainWindow(QMainWindow):
         apply_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._apply_btn = ApplyButton()
         self._apply_btn.clicked.connect(self._on_apply)
+        self._apply_btn.setShortcut("Return")
         apply_row.addWidget(self._apply_btn)
         bg_layout.addLayout(apply_row)
 
@@ -639,8 +661,9 @@ class MainWindow(QMainWindow):
         self._font_combo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._font_combo.currentIndexChanged.connect(self._on_font_selected)
 
-        browse_font = QPushButton("Browse…")
+        browse_font = QPushButton("Browse… [Ctrl+B]")
         browse_font.setStyleSheet(BROWSE_STYLE)
+        browse_font.setShortcut("Ctrl+B")
         browse_font.clicked.connect(self._browse_font)
 
         row.addWidget(self._font_combo, 1)
@@ -676,8 +699,9 @@ class MainWindow(QMainWindow):
         self._mod_combo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._mod_combo.currentIndexChanged.connect(self._on_mod_selected)
 
-        browse_mod = QPushButton("Browse…")
+        browse_mod = QPushButton("Browse… [Ctrl+Shift+B]")
         browse_mod.setStyleSheet(BROWSE_STYLE)
+        browse_mod.setShortcut("Ctrl+Shift+B")
         browse_mod.clicked.connect(self._browse_mod)
 
         row.addWidget(self._mod_combo, 1)
@@ -707,13 +731,13 @@ class MainWindow(QMainWindow):
                 padding-left: 8px;
             }
         """)
-        self._sb_label = QLabel("fModLoader v1.0.1 Beta | Status: Idle")
+        self._sb_label = QLabel("fModLoader v1.0.4 Beta | Status: Idle")
         self._sb_label.setStyleSheet("color: white; background: transparent; font-size: 11px;")
         sb.addWidget(self._sb_label)
 
     def _set_status(self, text: str, sb_text: str | None = None):
         self._status_lbl.setText(f"Status: {text}")
-        self._sb_label.setText(f"fModLoader v1.0.1 Beta | Status: {sb_text or text}")
+        self._sb_label.setText(f"fModLoader v1.0.4 Beta | Status: {sb_text or text}")
 
     # ── Font list management ──────────────────────────────────────────────────
 
@@ -776,7 +800,7 @@ class MainWindow(QMainWindow):
     # ── Browse for files ──────────────────────────────────────────────────────
 
     def _browse_font(self):
-        path, _ = QFileDialog.getOpenFileName(
+        path, _ = FMLFileDialog.getOpenFileName(
             self, "Select Modcompat Font", str(FONTS_DIR),
             "Modcompat Fonts (*.modcompat.ttf *.modcompat.otf);;All Files (*)"
         )
@@ -799,7 +823,7 @@ class MainWindow(QMainWindow):
         self._font_path = path
 
     def _browse_mod(self):
-        path, _ = QFileDialog.getOpenFileName(
+        path, _ = FMLFileDialog.getOpenFileName(
             self, "Select Font Mod File", str(MODS_DIR),
             "Font Mods (*.ttfm *.otfm);;All Files (*)"
         )
@@ -865,14 +889,14 @@ class MainWindow(QMainWindow):
     # ── Tool actions ──────────────────────────────────────────────────────────
 
     def _action_create_modcompat(self):
-        src, _ = QFileDialog.getOpenFileName(
+        src, _ = FMLFileDialog.getOpenFileName(
             self, "Select Source Font", "",
             "Fonts (*.ttf *.otf);;All Files (*)"
         )
         if not src:
             return
         out_name = Path(src).stem + ".modcompat" + Path(src).suffix
-        out_path, _ = QFileDialog.getSaveFileName(
+        out_path, _ = FMLFileDialog.getSaveFileName(
             self, "Save Modcompat Font", str(FONTS_DIR / out_name),
             "Modcompat Fonts (*.modcompat.ttf *.modcompat.otf);;All Files (*)"
         )
@@ -887,18 +911,61 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "Failed", "Could not create modcompat font.")
 
     def _action_create_demo_mod(self):
-        out_path, _ = QFileDialog.getSaveFileName(
-            self, "Save Demo Mod", str(MODS_DIR / "demo.ttfm"),
-            "Font Mods (*.ttfm);;All Files (*)"
+        out_path, _ = FMLFileDialog.getSaveFileName(
+            self, "Save Demo Mod",
+            str(MODS_DIR / "demo_mod.ttfm"),
+            "fModLoader Mod (*.ttfm *.otfm)"
         )
-        if not out_path:
+        if out_path:
+            if create_demo_mod(out_path):
+                self._set_status("Demo mod created successfully.", "Demo Mod Created")
+                self._refresh_mod_list()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to create demo mod.")
+
+    _GLYPH_EDITOR_FILTERS = (
+        "All Fonts (*.modcompat.ttf *.modcompat.otf *.modcompat.woff *.modcompat.woff2 "
+        "*.modcompat.ttc *.modcompat.otc *.modcompat.pfa *.modcompat.pfb *.modcompat.cff "
+        "*.modcompat.bdf *.modcompat.pcf *.modcompat.sfd *.modcompat.ufo *.svg *.ttfm *.otfm);;"
+        "Outline Fonts (*.modcompat.ttf *.modcompat.otf *.modcompat.woff *.modcompat.woff2 "
+        "*.modcompat.ttc *.modcompat.otc *.modcompat.pfa *.modcompat.pfb *.modcompat.cff);;"
+        "Bitmap Fonts (*.modcompat.bdf *.modcompat.pcf *.modcompat.fon *.modcompat.fnt);;"
+        "TeX Bitmap Fonts (*.modcompat.gf *.modcompat.pk);;"
+        "PostScript (*.modcompat.pfa *.modcompat.pfb *.modcompat.ps *.modcompat.cid);;"
+        "TrueType (*.modcompat.ttf *.modcompat.ttc);;"
+        "OpenType (*.modcompat.otf *.modcompat.otc);;"
+        "Type1 (*.modcompat.pfa *.modcompat.pfb);;"
+        "Type2 (*.modcompat.cff);;"
+        "Type3 (*.modcompat.t3 *.modcompat.ps);;"
+        "SVG (*.svg);;"
+        "UFO (*.modcompat.ufo);;"
+        "SFD (*.modcompat.sfd);;"
+        "Backup SFD (*.modcompat.sfd~);;"
+        "Extract from PDF (*.pdf);;"
+        "TTFM (*.ttfm);;"
+        "OTFM (*.otfm);;"
+        "Archives (*.zip *.tar.gz *.7z *.rar)"
+    )
+
+    def _open_glyph_editor(self):
+        path, _ = FMLFileDialog.getOpenFileName(
+            self, "Open Glyph / Font Editor", str(MODS_DIR),
+            self._GLYPH_EDITOR_FILTERS, new_file_mode=True
+        )
+        if not path:
             return
-        ok = create_demo_mod(out_path)
-        if ok:
-            self._refresh_mod_list()
-            QMessageBox.information(self, "Done", f"Demo mod saved:\n{out_path}")
+        
+        if path == "__NEW_FILE__":
+            self._untitled_counter += 1
+            if self._untitled_counter == 1:
+                title = "untitled"
+            else:
+                title = f"untitled {self._untitled_counter}"
+            self._glyph_editor = FontEditorWindow(self, filepath=title)
         else:
-            QMessageBox.critical(self, "Failed", "Could not create demo mod.")
+            self._glyph_editor = FontEditorWindow(self, filepath=path)
+            
+        self._glyph_editor.show()
 
     def _action_preferences(self):
         QMessageBox.information(self, "Preferences",
