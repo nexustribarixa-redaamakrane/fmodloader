@@ -68,6 +68,9 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 - **Glyph Info Dialog** — View and edit Unicode value, glyph name, and comments per glyph
 - **Comprehensive Keyboard Shortcuts** — Full shortcut coverage across all windows (see [Keyboard Shortcuts](#keyboard-shortcuts))
 - **Global Exception Handler** — Unhandled exceptions now display a styled diagnostic report dialog instead of silently crashing
+- **CLI Helper** — Added `make_modcompat.py` for batch font conversion
+- **FontForge Plugin** — Added `ff_fml_plugin.py` skeleton for external use
+- Improved mod handler ZIP extraction and metadata validation
 
 **🐛 Bug Fixes**
 - Fixed `QFont::setPointSize: Point size <= 0 (-1)` runtime warning across all UI files — replaced all dynamic `QFont(family, size)` constructor calls with `setPixelSize()` to be DPI-safe
@@ -77,19 +80,6 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 - Fixed `QPen(..., cosmetic=True)` invalid keyword argument TypeError in `GlyphCellWidget.paintEvent` causing silent rendering failure
 - Fixed double-invocation of the canvas dialog on glyph double-click — removed redundant `cellDoubleClicked` signal connection
 - Fixed `save_to_glyph_data(None)` crash in `GlyphCanvasDialog.done()` — now guarded with `if self.glyph_data is not None`
-
----
-
-### v1.0.3 BETA — *internal*
-- Integrated `ui_glyph_canvas.py` standalone canvas widget
-- Added `ff_fml_plugin.py` FontForge plugin skeleton
-
----
-
-### v1.0.2 BETA — *internal*
-- Added `make_modcompat.py` CLI helper for batch font conversion
-- Added `glyph_model.py` data model foundation
-- Improved mod handler ZIP extraction and metadata validation
 
 ---
 
