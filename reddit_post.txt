@@ -1,0 +1,15 @@
+Title: Just shipped a massive update to my font modding tool (fModLoader v1.0.4) 🚀
+
+Hey everyone,
+
+I've been heavily vibecoding my font modding utility, fModLoader, and I just pushed out a huge update (BETA v1.0.4 - "Project Vectoris"). I've been building this tool to make dynamic font glyph modification a lot easier and more accessible for the community without needing expensive commercial editors.
+
+For this update, I built a completely integrated FontForge-style glyph editor right into the app. It's got a responsive grid for every codepoint and a full vector drawing canvas with about 13 tools (Bezier pen, knife, ruler, shapes, freehand, etc.). You can now import SVGs directly into a glyph cell and even run Python or FontForge scripts right inside the tool.
+
+We also added a new custom file dialog with bookmarks and navigation history, a real vector data model under the hood, and a clean ZIP-based .ttfm project format to save and load your font mods effortlessly. It was honestly wild getting the Bezier intersection detection and DPI-safe rendering working smoothly, but the AI definitely pulled its weight.
+
+The whole thing is open source and built with Python, PyQt6, and fontTools. 
+
+Repo is up on GitHub if you want to check out the code or try it out: https://github.com/nexustribarixa-redaamakrane/fmodloader
+
+Would love to hear any feedback or thoughts if anyone is into font engineering or just building desktop apps with PyQt. Cheers!

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.4%20BETA-cc1a1a?style=for-the-badge&logo=python&logoColor=white)
+![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.6%20BETA-cc1a1a?style=for-the-badge&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3.9%2B-yellow?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-BETA-orange?style=for-the-badge)
@@ -41,7 +41,12 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 
 ## Changelog
 
-### v1.0.4 BETA — "Project Vectoris" *(current)*
+### v1.0.6 BETA — "Project Vectoris" *(current)*
+
+**🆕 Changes**
+- Version bump for BETA-v1.0.6-beta
+
+### v1.0.4 BETA — "Project Vectoris"
 
 **🆕 New Features**
 - **Built-in Font Editor** — Full FontForge-inspired glyph editor window with:
@@ -100,7 +105,7 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 
 ## Features
 
-| Feature | v1.0.1 | v1.0.4 |
+| Feature | v1.0.1 | v1.0.6 |
 |---|:---:|:---:|
 | Apply font mods (.ttfm/.otfm) | ✅ | ✅ |
 | Create modcompat fonts | ✅ | ✅ |
@@ -274,6 +279,6 @@ See [LICENSE](LICENSE) for details.
 
 *Open-source • Vibecoded • Community-driven*
 
-**fModLoader v1.0.4 BETA — "Project Vectoris"**
+**fModLoader v1.0.6 BETA — "Project Vectoris"**
 
 </div>

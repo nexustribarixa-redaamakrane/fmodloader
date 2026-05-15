@@ -1,6 +1,6 @@
 """
 ui_main_window.py
-Main application window for fModLoader v1.0.4 Beta.
+Main application window for fModLoader v1.0.6 Beta.
 Matches the reference screenshot:
   - Yellow/black hazard tape banner ("UNDER CONSTRUCTION / BETA")
   - Red menu bar: File | Mods | Tools | Settings | Help
@@ -461,7 +461,7 @@ class ApplyWorker(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("fModLoader v1.0.4 Beta")
+        self.setWindowTitle("fModLoader v1.0.6 Beta")
         self.setMinimumSize(800, 500)
         self.resize(920, 540)
 
@@ -583,7 +583,7 @@ class MainWindow(QMainWindow):
         tbl.setContentsMargins(20, 0, 20, 0)
         tbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        app_lbl = QLabel("fModLoader — BETA VERSION 1.0.4")
+        app_lbl = QLabel("fModLoader — BETA VERSION 1.0.6")
         app_lbl.setStyleSheet("""
             color: #1a1a1a;
             font-size: 22px;
@@ -731,13 +731,13 @@ class MainWindow(QMainWindow):
                 padding-left: 8px;
             }
         """)
-        self._sb_label = QLabel("fModLoader v1.0.4 Beta | Status: Idle")
+        self._sb_label = QLabel("fModLoader v1.0.6 Beta | Status: Idle")
         self._sb_label.setStyleSheet("color: white; background: transparent; font-size: 11px;")
         sb.addWidget(self._sb_label)
 
     def _set_status(self, text: str, sb_text: str | None = None):
         self._status_lbl.setText(f"Status: {text}")
-        self._sb_label.setText(f"fModLoader v1.0.4 Beta | Status: {sb_text or text}")
+        self._sb_label.setText(f"fModLoader v1.0.6 Beta | Status: {sb_text or text}")
 
     # ── Font list management ──────────────────────────────────────────────────
 

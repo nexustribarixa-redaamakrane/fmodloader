@@ -1,6 +1,6 @@
 """
 main.py
-Entry point for fModLoader v1.0.4 Beta.
+Entry point for fModLoader v1.0.6 Beta.
 """
 
 import sys
@@ -148,7 +148,7 @@ def _build_splash() -> QSplashScreen:
     p.setFont(sub_font)
     p.setPen(QColor("#ffcccc"))
     p.drawText(0, 95, w, 34, Qt.AlignmentFlag.AlignCenter,
-               'v1.0.4 BETA  •  "Project Vectoris"')
+               'v1.0.6 BETA  •  "Project Vectoris"')
 
     # Loading line
     p.setPen(QColor(255, 255, 255, 140))
@@ -182,7 +182,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setApplicationName("fModLoader")
-    app.setApplicationVersion("1.0.4 Beta")
+    app.setApplicationVersion("1.0.6 Beta")
     app.setOrganizationName("Nexus Tribarixa")
 
     # App-wide stylesheet
