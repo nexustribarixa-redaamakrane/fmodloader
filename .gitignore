@@ -38,3 +38,10 @@ ENV/
 # System files
 .DS_Store
 Thumbs.db
+
+# Virtual Environment
+.venv/
+
+# PyInstaller
+*.spec
+Output/
