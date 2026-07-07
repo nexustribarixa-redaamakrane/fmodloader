@@ -41,7 +41,7 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 
 ## Changelog
 
-### v1.0.6 BETA — "Project Vectoris" *(current)*
+### v1.0.6 BETA — "Project Horde" *(current)*
 
 **🆕 Changes**
 - Version bump for BETA-v1.0.6-beta
@@ -279,6 +279,6 @@ See [LICENSE](LICENSE) for details.
 
 *Open-source • Vibecoded • Community-driven*
 
-**fModLoader v1.0.6 BETA — "Project Vectoris"**
+**fModLoader v1.0.6 BETA — "Project Horde"**
 
 </div>

@@ -15,7 +15,7 @@ public partial class WelcomePageViewModel : WizardPageBase
         else
         {
             PageTitle = "Welcome to fModLoader Setup";
-            PageSubtitle = "BETA v1.0.6 — \"Project Vectoris\"";
+            PageSubtitle = "BETA v1.0.6 — \"Project Horde\"";
         }
         CanGoBack = false;
     }

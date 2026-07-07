@@ -148,7 +148,7 @@ def _build_splash() -> QSplashScreen:
     p.setFont(sub_font)
     p.setPen(QColor("#ffcccc"))
     p.drawText(0, 95, w, 34, Qt.AlignmentFlag.AlignCenter,
-               'v1.0.6 BETA  •  "Project Vectoris"')
+               'v1.0.6 BETA  •  "Project Horde"')
 
     # Loading line
     p.setPen(QColor(255, 255, 255, 140))
