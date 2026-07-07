@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.LicensePage"
+             x:DataType="vm:LicensePageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24,16,24,16">
+      <!-- Header -->
+      <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <!-- License Text Container -->
+      <Border Grid.Row="1"
+              Background="{StaticResource SurfaceContainerLowBrush}"
+              BorderBrush="{StaticResource OutlineVariantBrush}"
+              BorderThickness="1"
+              CornerRadius="12"
+              Padding="12,8">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <TextBlock Text="{Binding LicenseText}"
+                     FontFamily="{StaticResource GoogleSansCode}"
+                     FontSize="11"
+                     TextWrapping="Wrap"
+                     Foreground="{StaticResource OnSurfaceBrush}" />
+        </ScrollViewer>
+      </Border>
+      
+      <!-- Acceptance Radio Buttons -->
+      <StackPanel Grid.Row="2" Spacing="8" Margin="0,12,0,0">
+        <RadioButton IsChecked="{Binding IsAccepted, Mode=TwoWay}"
+                     GroupName="LicenseGroup"
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}">
+          <TextBlock Text="I accept the agreement" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </RadioButton>
+        <RadioButton IsChecked="{Binding !IsAccepted, Mode=OneWay}"
+                     GroupName="LicenseGroup"
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}">
+          <TextBlock Text="I do not accept the agreement" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </RadioButton>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -1,0 +1,117 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.TasksPage"
+             x:DataType="vm:TasksPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <Grid RowDefinitions="Auto,*" Margin="24,16,24,16">
+      <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="16" Margin="0,0,12,0">
+          
+          <StackPanel Spacing="8">
+            <TextBlock Text="Shortcuts"
+                       FontFamily="{StaticResource GoogleSansFlex}"
+                       FontSize="{StaticResource TitleMediumSize}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource SecondaryBrush}" />
+            <CheckBox IsChecked="{Binding CreateDesktopShortcut}"
+                      FontFamily="{StaticResource GoogleSansFlexText}"
+                      FontSize="{StaticResource BodyMediumSize}">
+              <TextBlock Text="Create a desktop shortcut" VerticalAlignment="Center" Margin="8,0,0,0"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding CreateStartupShortcut}"
+                      FontFamily="{StaticResource GoogleSansFlexText}"
+                      FontSize="{StaticResource BodyMediumSize}">
+              <TextBlock Text="Run at startup" VerticalAlignment="Center" Margin="8,0,0,0"/>
+            </CheckBox>
+          </StackPanel>
+          
+          <Separator Background="{StaticResource OutlineVariantBrush}" Height="1" />
+          
+          <StackPanel Spacing="8">
+            <TextBlock Text="File Associations"
+                       FontFamily="{StaticResource GoogleSansFlex}"
+                       FontSize="{StaticResource TitleMediumSize}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource SecondaryBrush}" />
+            <WrapPanel Orientation="Horizontal">
+              <CheckBox IsChecked="{Binding AssocModcompatTtf}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        Margin="0,0,16,8">
+                <TextBlock Text=".MODCOMPAT.TTF" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </CheckBox>
+              <CheckBox IsChecked="{Binding AssocModcompatOtf}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        Margin="0,0,16,8">
+                <TextBlock Text=".MODCOMPAT.OTF" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </CheckBox>
+              <CheckBox IsChecked="{Binding AssocModcompatTtc}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        Margin="0,0,16,8">
+                <TextBlock Text=".MODCOMPAT.TTC" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </CheckBox>
+              <CheckBox IsChecked="{Binding AssocTtfm}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        Margin="0,0,16,8">
+                <TextBlock Text=".TTFM" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </CheckBox>
+              <CheckBox IsChecked="{Binding AssocOtfm}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        Margin="0,0,16,8">
+                <TextBlock Text=".OTFM" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </CheckBox>
+            </WrapPanel>
+          </StackPanel>
+          
+          <Separator Background="{StaticResource OutlineVariantBrush}" Height="1" />
+          
+          <StackPanel Spacing="8">
+            <TextBlock Text="Font Viewer Integration"
+                       FontFamily="{StaticResource GoogleSansFlex}"
+                       FontSize="{StaticResource TitleMediumSize}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource SecondaryBrush}" />
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto" Margin="0,4,0,0">
+              <TextBlock Grid.Column="0" Text="Select font viewer:"
+                         FontFamily="{StaticResource GoogleSansFlexText}"
+                         FontSize="{StaticResource BodyMediumSize}"
+                         VerticalAlignment="Center"
+                         Margin="0,0,12,0"/>
+              <ComboBox Grid.Column="1"
+                        ItemsSource="{Binding FontViewerOptions}"
+                        SelectedIndex="{Binding FontViewerChoice}"
+                        FontFamily="{StaticResource GoogleSansFlexText}"
+                        FontSize="{StaticResource BodyMediumSize}"
+                        HorizontalAlignment="Stretch"
+                        Height="32" />
+            </Grid>
+          </StackPanel>
+          
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</UserControl>

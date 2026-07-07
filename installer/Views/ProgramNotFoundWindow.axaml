@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+        mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="220"
+        x:Class="FModLoaderInstaller.Views.ProgramNotFoundWindow"
+        Title="fModLoader Uninstall"
+        Width="440" Height="220"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="None"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
+
+  <Border Background="{StaticResource SurfaceContainerBrush}"
+          BorderBrush="{StaticResource OutlineVariantBrush}"
+          BorderThickness="1"
+          CornerRadius="16"
+          ClipToBounds="True">
+    <Grid>
+      <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" ShowWatermarks="False" PatternOpacity="0.03" />
+
+      <Grid RowDefinitions="Auto,*,Auto" Margin="28">
+        <!-- Title bar row (drag region) -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" PointerPressed="TitleBar_PointerPressed" Margin="0,0,0,16">
+          <Path Grid.Column="0"
+                Data="M 0,0 L 12,0 L 12,4 L 4,4 L 4,8 L 10,8 L 10,12 L 4,12 L 4,20 L 0,20 Z"
+                Fill="{StaticResource PrimaryBrush}"
+                Width="10" Height="16"
+                Stretch="Fill"
+                VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="1"
+                     Text="fModLoader Uninstall"
+                     FontFamily="{StaticResource GoogleSans}"
+                     FontSize="{StaticResource TitleMediumSize}"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource OnSurfaceBrush}"
+                     VerticalAlignment="Center"
+                     Margin="10,0,0,0"/>
+        </Grid>
+
+        <!-- Body -->
+        <StackPanel Grid.Row="1" Spacing="10" VerticalAlignment="Center">
+          <TextBlock Text="Program not found"
+                     FontFamily="{StaticResource GoogleSans}"
+                     FontSize="18"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource ErrorBrush}" />
+          <TextBlock Text="You cannot uninstall a program that does not exist on your PC. fModLoader does not appear to be installed, or the installation directory and registry entries are missing."
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}"
+                     TextWrapping="Wrap"
+                     Foreground="{StaticResource OnSurfaceBrush}" />
+        </StackPanel>
+
+        <!-- Button row -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,16,0,0">
+          <Button Name="ExitButton"
+                  Content="Exit"
+                  Click="ExitButton_Click"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource LabelLargeSize}"
+                  Classes="accent-btn"
+                  Width="100" Height="36" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

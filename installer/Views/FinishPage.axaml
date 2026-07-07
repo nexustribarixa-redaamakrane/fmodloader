@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.FinishPage"
+             x:DataType="vm:FinishPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" ShowWatermarks="True" PatternOpacity="0.04" />
+    
+    <Grid ColumnDefinitions="*,Auto" Margin="32">
+      <StackPanel Grid.Column="0" Spacing="12" VerticalAlignment="Center">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource HeadlineLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="18"
+                   FontWeight="Medium"
+                   Foreground="{StaticResource SecondaryBrush}" />
+        <TextBlock Text="{Binding FinishMessage}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyLargeSize}"
+                   TextWrapping="Wrap"
+                   Foreground="{StaticResource OnSurfaceBrush}"
+                   Margin="0,12,0,0"/>
+        
+        <CheckBox IsChecked="{Binding LaunchAfterInstall}"
+                  IsVisible="{Binding ShowLaunchOption}"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource BodyMediumSize}"
+                  Margin="0,20,0,0">
+          <TextBlock Text="Launch fModLoader now" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </CheckBox>
+      </StackPanel>
+      
+      <!-- Faint heart graphic or animated heartbeat on side -->
+      <ctrl:HeartbeatLine Grid.Column="1" Width="100" Height="200" VerticalAlignment="Center" Margin="16,0,0,0"
+                           StrokeBrush="{StaticResource PrimaryBrush}" StrokeThickness="1.5" Amplitude="0.25" Speed="0.005" />
+    </Grid>
+  </Grid>
+</UserControl>

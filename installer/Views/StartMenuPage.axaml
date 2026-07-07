@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.StartMenuPage"
+             x:DataType="vm:StartMenuPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <StackPanel Margin="24" Spacing="16" VerticalAlignment="Center">
+      <!-- Header -->
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <!-- Checkbox and Textbox -->
+      <StackPanel Spacing="12" Margin="0,16,0,0">
+        <CheckBox IsChecked="{Binding CreateStartMenu}"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource BodyMediumSize}">
+          <TextBlock Text="Create a Start Menu folder" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </CheckBox>
+        
+        <TextBox Text="{Binding GroupName, Mode=TwoWay}"
+                 IsEnabled="{Binding CreateStartMenu}"
+                 FontFamily="{StaticResource GoogleSansCode}"
+                 FontSize="{StaticResource BodyMediumSize}"
+                 Height="36"
+                 Watermark="fModLoader" />
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

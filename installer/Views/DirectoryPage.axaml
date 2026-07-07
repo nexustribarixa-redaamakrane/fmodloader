@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.DirectoryPage"
+             x:DataType="vm:DirectoryPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <StackPanel Margin="24" Spacing="16" VerticalAlignment="Center">
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <Grid ColumnDefinitions="*,Auto" Margin="0,16,0,0">
+        <TextBox Grid.Column="0"
+                 Text="{Binding TargetDirectory, Mode=TwoWay}"
+                 IsEnabled="{Binding !IsReadOnly}"
+                 FontFamily="{StaticResource GoogleSansCode}"
+                 FontSize="{StaticResource BodyMediumSize}"
+                 VerticalAlignment="Center"
+                 Height="36"
+                 Watermark="C:\Program Files\fModLoader" />
+        <Button Grid.Column="1"
+                Name="BrowseButton"
+                Content="Browse…"
+                Click="BrowseButton_Click"
+                IsEnabled="{Binding !IsReadOnly}"
+                FontFamily="{StaticResource GoogleSansFlexText}"
+                FontSize="{StaticResource LabelLargeSize}"
+                Margin="8,0,0,0"
+                Height="36"
+                Classes="accent" />
+      </Grid>
+      
+      <TextBlock Text="{Binding SpaceInfo}"
+                 FontFamily="{StaticResource GoogleSansFlexText}"
+                 FontSize="{StaticResource BodySmallSize}"
+                 Foreground="{StaticResource SecondaryBrush}"
+                 Margin="4,0,0,0" />
+    </StackPanel>
+  </Grid>
+</UserControl>

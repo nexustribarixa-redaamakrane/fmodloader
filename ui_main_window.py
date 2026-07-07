@@ -300,41 +300,45 @@ class ApplyButton(QPushButton):
 
 COMBO_STYLE = """
 QComboBox {
-    background: white;
-    color: #222;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    padding: 5px 10px;
+    background-color: #FFFFFF;
+    color: #1C1B1B;
+    border: 1px solid #857373;
+    border-radius: 8px;
+    padding: 6px 12px;
     font-family: 'Segoe UI', Arial;
     font-size: 12px;
-    min-height: 28px;
+    min-height: 32px;
 }
 QComboBox:hover {
-    border-color: #cc1a1a;
+    border-color: #CC1A1A;
+}
+QComboBox:focus {
+    border-color: #CC1A1A;
+    border-width: 2px;
 }
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: 28px;
-    border-left: 1px solid #cccccc;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
-        stop:0 #cc1a1a, stop:1 #8b0000);
+    width: 32px;
+    border-left: 1px solid #D8C2C2;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: #FFF0F0;
 }
 QComboBox::down-arrow {
     image: none;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 6px solid white;
+    border-top: 6px solid #8B0000;
     width: 0;
     height: 0;
 }
 QComboBox QAbstractItemView {
-    background: white;
-    border: 1px solid #cc1a1a;
-    selection-background-color: #cc1a1a;
-    selection-color: white;
+    background-color: #FFFFFF;
+    border: 1px solid #857373;
+    border-radius: 8px;
+    selection-background-color: #FFDAD6;
+    selection-color: #410002;
     font-family: 'Segoe UI', Arial;
     font-size: 12px;
     outline: none;
@@ -343,23 +347,23 @@ QComboBox QAbstractItemView {
 
 BROWSE_STYLE = """
 QPushButton {
-    background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
-        stop:0 #f5f5f5, stop:1 #dddddd);
-    color: #333;
-    border: 1px solid #aaaaaa;
-    border-radius: 4px;
-    padding: 5px 14px;
+    background-color: #FFF0F0;
+    color: #CC1A1A;
+    border: 1px solid #D8C2C2;
+    border-radius: 16px;
+    padding: 6px 18px;
     font-family: 'Segoe UI', Arial;
+    font-weight: bold;
     font-size: 12px;
-    min-height: 28px;
+    min-height: 32px;
 }
 QPushButton:hover {
-    background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
-        stop:0 #ffffff, stop:1 #eeeeee);
-    border-color: #cc1a1a;
+    background-color: #FFDAD6;
+    color: #410002;
+    border-color: #CC1A1A;
 }
 QPushButton:pressed {
-    background: #dddddd;
+    background-color: #FFB4AB;
 }
 """
 
@@ -367,18 +371,24 @@ QPushButton:pressed {
 # ───────────────────────────── Background Widget ──────────────────────────────
 
 class MainBackground(QWidget):
-    """Light background with faint 'f' watermarks and wide heartbeat line."""
+    """Elegant MD3 background with dot grid and faint 'f' watermarks."""
 
     def paintEvent(self, event):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
         w, h = self.width(), self.height()
 
-        # Light gradient background
-        grad = QLinearGradient(0, 0, 0, h)
-        grad.setColorAt(0, QColor("#ffffff"))
-        grad.setColorAt(1, QColor("#f5f5f5"))
-        p.fillRect(self.rect(), QBrush(grad))
+        # Surface background (#FFFBFF)
+        p.fillRect(self.rect(), QColor("#FFFBFF"))
+
+        # Draw subtle dot grid (#D8C2C2)
+        dot_color = QColor(204, 26, 26, 12) # Branded red dot grid with low opacity
+        spacing = 24
+        p.setBrush(QBrush(dot_color))
+        p.setPen(Qt.PenStyle.NoPen)
+        for x in range(spacing, w, spacing):
+            for y in range(spacing, h, spacing):
+                p.drawEllipse(QPointF(x, y), 1.2, 1.2)
 
         # Faint 'f' watermarks
         wm_font = QFont("Georgia")
@@ -386,13 +396,13 @@ class MainBackground(QWidget):
         wm_font.setWeight(QFont.Weight.Bold)
         wm_font.setItalic(True)
         p.setFont(wm_font)
-        p.setPen(QColor(180, 0, 0, 14))
+        p.setPen(QColor(204, 26, 26, 8)) # Very faint red watermark
         positions = [(30, 200), (180, 100), (340, 280), (500, 120), (650, 310), (780, 90), (100, 380)]
         for x, y in positions:
             p.drawText(x, y, "f")
 
-        # Wide heartbeat line watermark across middle
-        p.setPen(QPen(QColor(180, 0, 0, 20), 2))
+        # ECG Heartbeat Line
+        p.setPen(QPen(QColor(204, 26, 26, 24), 1.5))
         mid_y = h * 0.55
         pts = []
         n = w
@@ -403,7 +413,7 @@ class MainBackground(QWidget):
             elif 0.47 < t < 0.51:
                 amp = -math.sin((t - 0.47) / 0.04 * math.pi) * 12
             else:
-                amp = math.sin(t * math.pi * 6) * 2
+                amp = math.sin(t * math.pi * 6) * 1.5
             pts.append(QPointF(float(i), mid_y - amp))
 
         for i in range(len(pts) - 1):

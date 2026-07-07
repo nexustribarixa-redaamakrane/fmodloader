@@ -1,0 +1,157 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+        xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="680" d:DesignHeight="520"
+        x:Class="FModLoaderInstaller.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="{Binding WindowTitle}"
+        Width="680" Height="520"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="40"
+        ExtendClientAreaChromeHints="NoChrome"
+        Background="{StaticResource SurfaceBrush}">
+
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <!-- ── Custom Title Bar ── -->
+    <Grid Grid.Row="0" Height="40" Background="{StaticResource SurfaceContainerBrush}" ColumnDefinitions="Auto,*,Auto" PointerPressed="TitleBar_PointerPressed">
+      <!-- Title & Icon -->
+      <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="10">
+        <!-- Visual Shield/f representation (fModLoader logo) -->
+        <Path Data="M 0,0 L 12,0 L 12,4 L 4,4 L 4,8 L 10,8 L 10,12 L 4,12 L 4,20 L 0,20 Z"
+              Fill="{StaticResource PrimaryBrush}"
+              Width="12" Height="20"
+              Stretch="Fill"/>
+        <TextBlock Text="{Binding WindowTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleMediumSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource OnSurfaceBrush}"
+                   VerticalAlignment="Center"/>
+      </StackPanel>
+
+      <!-- Drag handle space -->
+      <Panel Grid.Column="1" Background="Transparent" />
+
+      <!-- Minimize / Close Buttons -->
+      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Stretch">
+        <Button Width="46" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="Transparent" BorderThickness="0" CornerRadius="0" Click="MinButton_Click" ToolTip.Tip="Minimize"
+                IsEnabled="{Binding !IsCleaningUp}">
+          <Path Data="M 0,0 L 10,0" Stroke="{StaticResource OnSurfaceBrush}" StrokeThickness="1.5" Width="10" Height="1"/>
+        </Button>
+        <Button Width="46" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Background="Transparent" BorderThickness="0" CornerRadius="0" Click="CloseButton_Click" ToolTip.Tip="Close"
+                Classes="close-btn"
+                IsEnabled="{Binding !IsCleaningUp}">
+          <Path Data="M 0,0 L 8,8 M 8,0 L 0,8" Stroke="{StaticResource OnSurfaceBrush}" StrokeThickness="1.5" Width="8" Height="8"/>
+        </Button>
+      </StackPanel>
+    </Grid>
+
+    <!-- ── Wizard Step Indicator ── -->
+    <Border Grid.Row="1" Background="{StaticResource SurfaceContainerLowBrush}" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="0,0,0,1" IsVisible="{Binding ShowStepIndicator}">
+      <ctrl:StepIndicator CurrentStep="{Binding CurrentStep}" TotalSteps="{Binding TotalSteps}" StepNames="{Binding StepNames}" />
+    </Border>
+
+    <!-- ── Center Wizard Page Content ── -->
+    <ContentControl Grid.Row="2" Content="{Binding CurrentPage}" />
+
+    <!-- ── Bottom Navigation Bar ── -->
+    <Border Grid.Row="3" Background="{StaticResource SurfaceContainerBrush}" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="0,1,0,0" IsVisible="{Binding !IsCleaningUp}">
+      <Grid ColumnDefinitions="Auto,*,Auto" Margin="24,16">
+        <!-- Cancel button on Left -->
+        <Button Grid.Column="0"
+                Content="Cancel"
+                Command="{Binding CancelCommand}"
+                IsVisible="{Binding ShowCancelButton}"
+                FontFamily="{StaticResource GoogleSansFlexText}"
+                FontSize="{StaticResource LabelLargeSize}"
+                Classes="secondary-btn"
+                Width="90" Height="36" />
+
+        <!-- Navigation actions on Right -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12">
+          <Button Content="Back"
+                  Command="{Binding GoBackCommand}"
+                  IsEnabled="{Binding CanNavigateBack}"
+                  IsVisible="{Binding !IsFinished}"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource LabelLargeSize}"
+                  Classes="secondary-btn"
+                  Width="90" Height="36" />
+
+          <!-- Go Next (Next / Install) -->
+          <Button Content="{Binding NextButtonText}"
+                  Command="{Binding GoNextCommand}"
+                  IsEnabled="{Binding CanNavigateNext}"
+                  IsVisible="{Binding !IsFinished}"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource LabelLargeSize}"
+                  Classes="accent-btn"
+                  Width="110" Height="36" />
+
+          <!-- Finish -->
+          <Button Content="Finish"
+                  Command="{Binding FinishCommand}"
+                  IsVisible="{Binding IsFinished}"
+                  FontFamily="{StaticResource GoogleSansFlexText}"
+                  FontSize="{StaticResource LabelLargeSize}"
+                  Classes="accent-btn"
+                  Width="110" Height="36" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- ── Cancel Confirmation Modal Overlay ── -->
+    <Grid Grid.RowSpan="4"
+          Background="#AA000000"
+          IsVisible="{Binding IsCancelConfirmationVisible}"
+          ZIndex="100">
+      <Border Background="{StaticResource SurfaceContainerBrush}"
+              BorderBrush="{StaticResource OutlineVariantBrush}"
+              BorderThickness="1"
+              CornerRadius="16"
+              Width="380"
+              Height="180"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              BoxShadow="0 8 24 #33000000">
+        <Grid RowDefinitions="*,Auto" Margin="24">
+          <StackPanel Grid.Row="0" Spacing="8">
+            <TextBlock Text="Cancel Setup"
+                       FontFamily="{StaticResource GoogleSans}"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}" />
+            <TextBlock Text="Are you sure you want to cancel Setup?"
+                       FontFamily="{StaticResource GoogleSansFlexText}"
+                       FontSize="{StaticResource BodyMediumSize}"
+                       Foreground="{StaticResource OnSurfaceBrush}"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+            <Button Content="No"
+                    Command="{Binding CloseCancelModalCommand}"
+                    Width="80"
+                    Height="32"
+                    Classes="secondary-btn"
+                    FontFamily="{StaticResource GoogleSansFlexText}"
+                    FontSize="{StaticResource LabelLargeSize}" />
+            <Button Content="Yes"
+                    Command="{Binding ConfirmCancelCommand}"
+                    Width="80"
+                    Height="32"
+                    Classes="accent"
+                    FontFamily="{StaticResource GoogleSansFlexText}"
+                    FontSize="{StaticResource LabelLargeSize}" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>

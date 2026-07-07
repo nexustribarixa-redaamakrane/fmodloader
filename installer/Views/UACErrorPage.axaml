@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.UACErrorPage"
+             x:DataType="vm:UACErrorPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" PatternOpacity="0.03" />
+    
+    <StackPanel Margin="32" Spacing="16" VerticalAlignment="Center">
+      <!-- Shield/Warning Icon -->
+      <Border Background="{StaticResource ErrorContainerBrush}"
+              CornerRadius="12"
+              Padding="16"
+              HorizontalAlignment="Left">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Path Data="M 12,0 L 24,20 L 0,20 Z"
+                Fill="{StaticResource ErrorBrush}"
+                Width="24" Height="20"
+                Stretch="Uniform"
+                VerticalAlignment="Center" />
+          <TextBlock Text="Administrator Privileges Required"
+                     FontFamily="{StaticResource GoogleSans}"
+                     FontSize="{StaticResource TitleMediumSize}"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource ErrorBrush}"
+                     VerticalAlignment="Center" />
+        </StackPanel>
+      </Border>
+
+      <!-- Explanation -->
+      <TextBlock Text="{Binding ErrorMessage}"
+                 FontFamily="{StaticResource GoogleSansFlexText}"
+                 FontSize="{StaticResource BodyLargeSize}"
+                 TextWrapping="Wrap"
+                 Foreground="{StaticResource OnSurfaceBrush}"
+                 LineHeight="24" />
+      
+      <TextBlock Text="{Binding Instructions}"
+                 FontFamily="{StaticResource GoogleSansFlexText}"
+                 FontSize="{StaticResource BodyMediumSize}"
+                 Foreground="{StaticResource OnSurfaceVariantBrush}" />
+
+      <!-- Restart as Admin Button -->
+      <Button Content="⛨  Restart as Administrator"
+              Command="{Binding RestartAsAdminCommand}"
+              FontFamily="{StaticResource GoogleSansFlexText}"
+              FontSize="{StaticResource LabelLargeSize}"
+              Classes="accent-btn"
+              Height="40"
+              HorizontalAlignment="Left"
+              Padding="24,8" />
+      
+      <!-- Status -->
+      <TextBlock Text="Status: Execution halted — elevation required."
+                 FontFamily="{StaticResource GoogleSansCode}"
+                 FontSize="{StaticResource BodySmallSize}"
+                 Foreground="{StaticResource OutlineBrush}" />
+    </StackPanel>
+  </Grid>
+</UserControl>

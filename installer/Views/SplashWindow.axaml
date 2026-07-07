@@ -1,0 +1,67 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="280"
+        x:Class="FModLoaderInstaller.Views.SplashWindow"
+        Title="fModLoader Setup"
+        Width="450" Height="280"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="None"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
+
+  <Border Background="{StaticResource SurfaceContainerBrush}"
+          BorderBrush="{StaticResource OutlineVariantBrush}"
+          BorderThickness="1"
+          CornerRadius="16"
+          ClipToBounds="True">
+    <Grid>
+      <!-- Premium Overlay Pattern -->
+      <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" ShowWatermarks="False" PatternOpacity="0.04" />
+
+      <Grid RowDefinitions="*,Auto" Margin="32">
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" Spacing="16">
+          <!-- Logo & Title -->
+          <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+            <Path Data="M 0,0 L 12,0 L 12,4 L 4,4 L 4,8 L 10,8 L 10,12 L 4,12 L 4,20 L 0,20 Z"
+                  Fill="{StaticResource PrimaryBrush}"
+                  Width="24" Height="40"
+                  Stretch="Fill"/>
+            <TextBlock Text="fModLoader"
+                       FontFamily="{StaticResource GoogleSans}"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource OnSurfaceBrush}"
+                       VerticalAlignment="Center"/>
+          </StackPanel>
+
+          <!-- Subtitle / Loading text -->
+          <TextBlock Name="StatusTextBlock"
+                     Text="Loading installer resources…"
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}"
+                     Foreground="{StaticResource SecondaryBrush}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Loading Progress Bar -->
+        <StackPanel Grid.Row="1" Spacing="8">
+          <ProgressBar Name="SplashProgressBar"
+                       Minimum="0" Maximum="100" Value="0"
+                       Height="4"
+                       Foreground="{StaticResource PrimaryBrush}"
+                       Background="{StaticResource SurfaceContainerLowBrush}"
+                       CornerRadius="2"/>
+          <TextBlock Name="VersionTextBlock"
+                     Text="BETA v1.0.6 — &quot;Project Vectoris&quot;"
+                     FontFamily="{StaticResource GoogleSansCodeStatic}"
+                     FontSize="10"
+                     Foreground="{StaticResource OutlineBrush}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

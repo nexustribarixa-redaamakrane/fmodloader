@@ -1,0 +1,2 @@
+# In your opinion, is it even realistic for an uninstaller to have a program not found error? Because it's the installer who makes the uninstaller along with the program itself.
+# I mean, unless the user manually deletes the uninstaller file, there should be no reason for it to not be found.

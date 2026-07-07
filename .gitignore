@@ -45,3 +45,7 @@ Thumbs.db
 # PyInstaller
 *.spec
 Output/
+
+# .NET
+**/bin/
+**/obj/

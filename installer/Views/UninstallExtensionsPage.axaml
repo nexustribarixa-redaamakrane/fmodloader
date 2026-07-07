@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.UninstallExtensionsPage"
+             x:DataType="vm:UninstallExtensionsPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+
+    <StackPanel Margin="24" Spacing="16" VerticalAlignment="Center">
+      <!-- Header -->
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+
+      <!-- Option cards -->
+      <StackPanel Spacing="10" Margin="0,12,0,0">
+
+        <!-- Delete extensions option -->
+        <Border Background="{StaticResource SurfaceContainerLowBrush}"
+                BorderBrush="{StaticResource OutlineVariantBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="16,12">
+          <RadioButton IsChecked="{Binding DeleteExtensions, Mode=TwoWay}"
+                       GroupName="ExtensionChoice">
+            <StackPanel Spacing="2" Margin="8,0,0,0">
+              <TextBlock Text="Delete file associations"
+                         FontFamily="{StaticResource GoogleSansFlexText}"
+                         FontSize="{StaticResource BodyLargeSize}"
+                         FontWeight="Medium"
+                         Foreground="{StaticResource OnSurfaceBrush}" />
+              <TextBlock Text="Remove .ttfm, .otfm, and .modcompat file type registrations from the system."
+                         FontFamily="{StaticResource GoogleSansFlexText}"
+                         FontSize="{StaticResource BodySmallSize}"
+                         Foreground="{StaticResource OnSurfaceVariantBrush}"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </RadioButton>
+        </Border>
+
+        <!-- Keep extensions option -->
+        <Border Background="{StaticResource SurfaceContainerLowBrush}"
+                BorderBrush="{StaticResource OutlineVariantBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="16,12">
+          <RadioButton IsChecked="{Binding KeepExtensions, Mode=TwoWay}"
+                       GroupName="ExtensionChoice">
+            <StackPanel Spacing="2" Margin="8,0,0,0">
+              <TextBlock Text="Keep file associations"
+                         FontFamily="{StaticResource GoogleSansFlexText}"
+                         FontSize="{StaticResource BodyLargeSize}"
+                         FontWeight="Medium"
+                         Foreground="{StaticResource OnSurfaceBrush}" />
+              <TextBlock Text="Leave .ttfm, .otfm, and .modcompat associations intact. Useful if you plan to reinstall."
+                         FontFamily="{StaticResource GoogleSansFlexText}"
+                         FontSize="{StaticResource BodySmallSize}"
+                         Foreground="{StaticResource OnSurfaceVariantBrush}"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </RadioButton>
+        </Border>
+
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

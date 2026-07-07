@@ -1,0 +1,87 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.InstallingPage"
+             x:DataType="vm:InstallingPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <StackPanel Margin="24" Spacing="16" VerticalAlignment="Center">
+      <!-- Header -->
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <!-- Progress Bar and Details -->
+      <StackPanel Spacing="12" Margin="0,16,0,0">
+        <ctrl:SurgicalProgressBar Value="{Binding ProgressValue}" Maximum="100" />
+        
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Grid.Column="0"
+                     Text="{Binding StatusText}"
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}"
+                     Foreground="{StaticResource OnSurfaceBrush}"
+                     TextTrimming="CharacterEllipsis" />
+          
+          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" IsVisible="{Binding TotalFiles}">
+            <TextBlock Text="{Binding CompletedFiles}"
+                       FontFamily="{StaticResource GoogleSansFlexText}"
+                       FontSize="{StaticResource BodyMediumSize}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}" />
+            <TextBlock Text="/"
+                       FontFamily="{StaticResource GoogleSansFlexText}"
+                       FontSize="{StaticResource BodyMediumSize}"
+                       Foreground="{StaticResource OnSurfaceVariantBrush}" />
+            <TextBlock Text="{Binding TotalFiles}"
+                       FontFamily="{StaticResource GoogleSansFlexText}"
+                       FontSize="{StaticResource BodyMediumSize}"
+                       Foreground="{StaticResource OnSurfaceVariantBrush}" />
+          </StackPanel>
+        </Grid>
+        
+        <TextBlock Text="{Binding CurrentFile}"
+                   FontFamily="{StaticResource GoogleSansCode}"
+                   FontSize="11"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}"
+                   TextTrimming="CharacterEllipsis"
+                   Height="16" />
+      </StackPanel>
+      
+      <!-- Error Message if failed -->
+      <Border IsVisible="{Binding InstallFailed}"
+              Background="{StaticResource ErrorContainerBrush}"
+              BorderBrush="{StaticResource ErrorBrush}"
+              BorderThickness="1"
+              CornerRadius="8"
+              Padding="12"
+              Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Installation Failed"
+                     FontFamily="{StaticResource GoogleSansFlexText}"
+                     FontSize="{StaticResource BodyMediumSize}"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource ErrorBrush}" />
+          <TextBlock Text="{Binding ErrorMessage}"
+                     FontFamily="{StaticResource GoogleSansCode}"
+                     FontSize="11"
+                     TextWrapping="Wrap"
+                     Foreground="{StaticResource ErrorBrush}" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </Grid>
+</UserControl>

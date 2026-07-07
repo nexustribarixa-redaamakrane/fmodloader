@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       MD3 EXPRESSIVE — Shape System (10-step corner radius scale)
+       ═══════════════════════════════════════════════════════════════════════ -->
+
+  <CornerRadius x:Key="ShapeNone">0</CornerRadius>
+  <CornerRadius x:Key="ShapeExtraSmall">4</CornerRadius>
+  <CornerRadius x:Key="ShapeSmall">8</CornerRadius>
+  <CornerRadius x:Key="ShapeMedium">12</CornerRadius>
+  <CornerRadius x:Key="ShapeLarge">16</CornerRadius>
+  <CornerRadius x:Key="ShapeLargeIncreased">20</CornerRadius>
+  <CornerRadius x:Key="ShapeExtraLarge">28</CornerRadius>
+  <CornerRadius x:Key="ShapeExtraLargeIncreased">32</CornerRadius>
+  <CornerRadius x:Key="ShapeExtraExtraLarge">48</CornerRadius>
+  <CornerRadius x:Key="ShapeFull">9999</CornerRadius>
+
+  <!-- ── Elevation / Shadow depths ───────────────────────────────────────── -->
+  <x:Double x:Key="ElevationLevel0">0</x:Double>
+  <x:Double x:Key="ElevationLevel1">1</x:Double>
+  <x:Double x:Key="ElevationLevel2">3</x:Double>
+  <x:Double x:Key="ElevationLevel3">6</x:Double>
+  <x:Double x:Key="ElevationLevel4">8</x:Double>
+  <x:Double x:Key="ElevationLevel5">12</x:Double>
+
+  <!-- ── Common dimension tokens ─────────────────────────────────────────── -->
+  <Thickness x:Key="ContentPadding">24</Thickness>
+  <Thickness x:Key="CardPadding">20</Thickness>
+  <Thickness x:Key="PagePadding">32,24,32,24</Thickness>
+  <x:Double x:Key="ButtonHeight">40</x:Double>
+  <x:Double x:Key="ButtonMinWidth">100</x:Double>
+  <x:Double x:Key="NavBarHeight">72</x:Double>
+
+</ResourceDictionary>

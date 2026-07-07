@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.PreparePage"
+             x:DataType="vm:PreparePageViewModel">
+  <Grid>
+    <!-- Pattern overlay matching the installer theme -->
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" PatternOpacity="0.03" />
+
+    <StackPanel Margin="32" Spacing="24" VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+      <!-- Title & Subtitle -->
+      <StackPanel Spacing="6" HorizontalAlignment="Center">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="18"
+                   FontWeight="Medium"
+                   Foreground="{StaticResource SecondaryBrush}"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+
+      <!-- Smooth Progress Indicator -->
+      <StackPanel Spacing="12">
+        <ProgressBar Value="{Binding LoadingProgressValue}"
+                     Minimum="0" Maximum="100"
+                     Height="6"
+                     Foreground="{StaticResource PrimaryBrush}"
+                     Background="{StaticResource SurfaceContainerLowBrush}"
+                     CornerRadius="3"/>
+        <TextBlock Text="{Binding StatusText}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

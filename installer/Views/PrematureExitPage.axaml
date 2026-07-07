@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.PrematureExitPage"
+             x:DataType="vm:PrematureExitPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" PatternOpacity="0.03" />
+
+    <Grid RowDefinitions="Auto,Auto,*" Margin="24,16,24,16">
+      <!-- Header -->
+      <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource ErrorBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+
+      <!-- Failure message text -->
+      <TextBlock Grid.Row="1"
+                 Text="{Binding FailureMessage}"
+                 FontFamily="{StaticResource GoogleSansFlexText}"
+                 FontSize="{StaticResource BodyMediumSize}"
+                 TextWrapping="Wrap"
+                 Foreground="{StaticResource OnSurfaceBrush}"
+                 Margin="0,0,0,12" />
+
+      <!-- Traceback/Details Box -->
+      <Border Grid.Row="2"
+              Background="{StaticResource ErrorContainerBrush}"
+              BorderBrush="{StaticResource ErrorBrush}"
+              BorderThickness="1"
+              CornerRadius="12"
+              Padding="12,8">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+          <SelectableTextBlock Text="{Binding Traceback}"
+                               FontFamily="{StaticResource GoogleSansCodeStatic}"
+                               FontSize="11"
+                               Foreground="{StaticResource ErrorBrush}" />
+        </ScrollViewer>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:ctrl="clr-namespace:FModLoaderInstaller.Controls"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+             x:Class="FModLoaderInstaller.Views.ReadyPage"
+             x:DataType="vm:ReadyPageViewModel">
+  <Grid>
+    <ctrl:SurgicalPatternOverlay ShowCrossHatch="False" ShowDotGrid="True" PatternOpacity="0.02" />
+    
+    <Grid RowDefinitions="Auto,*" Margin="24,16,24,16">
+      <!-- Header -->
+      <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
+        <TextBlock Text="{Binding PageTitle}"
+                   FontFamily="{StaticResource GoogleSans}"
+                   FontSize="{StaticResource TitleLargeSize}"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock Text="{Binding PageSubtitle}"
+                   FontFamily="{StaticResource GoogleSansFlexText}"
+                   FontSize="{StaticResource BodyMediumSize}"
+                   Foreground="{StaticResource OnSurfaceVariantBrush}" />
+      </StackPanel>
+      
+      <!-- Summary Box -->
+      <Border Grid.Row="1"
+              Background="{StaticResource SurfaceContainerLowBrush}"
+              BorderBrush="{StaticResource OutlineVariantBrush}"
+              BorderThickness="1"
+              CornerRadius="12"
+              Padding="16,12">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <TextBlock Text="{Binding Summary}"
+                     FontFamily="{StaticResource GoogleSansCode}"
+                     FontSize="{StaticResource BodyMediumSize}"
+                     TextWrapping="Wrap"
+                     LineHeight="22"
+                     Foreground="{StaticResource OnSurfaceBrush}" />
+        </ScrollViewer>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

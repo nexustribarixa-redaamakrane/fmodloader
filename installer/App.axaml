@@ -1,0 +1,188 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FModLoaderInstaller.ViewModels"
+             xmlns:views="clr-namespace:FModLoaderInstaller.Views"
+             x:Class="FModLoaderInstaller.App"
+             RequestedThemeVariant="Light">
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:WelcomePageViewModel}">
+      <views:WelcomePage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CleanupPageViewModel}">
+      <views:CleanupPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:RestartPageViewModel}">
+      <views:RestartPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:LicensePageViewModel}">
+      <views:LicensePage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:DirectoryPageViewModel}">
+      <views:DirectoryPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:StartMenuPageViewModel}">
+      <views:StartMenuPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:TasksPageViewModel}">
+      <views:TasksPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ReadyPageViewModel}">
+      <views:ReadyPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:InstallingPageViewModel}">
+      <views:InstallingPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:FinishPageViewModel}">
+      <views:FinishPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:UACErrorPageViewModel}">
+      <views:UACErrorPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:PreparePageViewModel}">
+      <views:PreparePage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CancelPageViewModel}">
+      <views:CancelPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:PrematureExitPageViewModel}">
+      <views:PrematureExitPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CloseProgramsPageViewModel}">
+      <views:CloseProgramsPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:UninstallExtensionsPageViewModel}">
+      <views:UninstallExtensionsPage />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:UninstallingPageViewModel}">
+      <views:UninstallingPage />
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://fModLoader_Setup/Themes/Colors.axaml" />
+        <ResourceInclude Source="avares://fModLoader_Setup/Themes/Typography.axaml" />
+        <ResourceInclude Source="avares://fModLoader_Setup/Themes/Shapes.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- ── Typography Styles ── -->
+    <!-- Avalonia handles variable font axis selection automatically via FontWeight/FontStyle/FontStretch.
+         These styles provide consistent default typography across the installer. -->
+    <Style Selector="TextBlock">
+      <Setter Property="TextWrapping" Value="NoWrap" />
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansText}" />
+    </Style>
+
+    <Style Selector="TextBlock.headline">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansStatic}" />
+    </Style>
+    
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansStatic}" />
+    </Style>
+
+    <Style Selector="TextBlock.code">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansCodeStatic}" />
+    </Style>
+
+    <!-- ── Accent Button (Primary) ── -->
+    <Style Selector="Button.accent-btn">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource OnPrimaryBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.15" Easing="QuadraticEaseOut" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.accent-btn:pointerover">
+      <Setter Property="Background" Value="{StaticResource TertiaryBrush}" />
+    </Style>
+    <Style Selector="Button.accent-btn:disabled">
+      <Setter Property="Background" Value="{StaticResource SurfaceVariantBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource OutlineBrush}" />
+    </Style>
+
+    <!-- ── Secondary Button (Outline) ── -->
+    <Style Selector="Button.secondary-btn">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="{StaticResource OnSurfaceBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.secondary-btn:pointerover">
+      <Setter Property="Background" Value="{StaticResource SurfaceContainerBrush}" />
+    </Style>
+    <Style Selector="Button.secondary-btn:disabled">
+      <Setter Property="Foreground" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineVariantBrush}" />
+    </Style>
+
+    <!-- ── Accent alias (same as accent-btn) ── -->
+    <Style Selector="Button.accent">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource OnPrimaryBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="Button.accent:pointerover">
+      <Setter Property="Background" Value="{StaticResource TertiaryBrush}" />
+    </Style>
+
+    <!-- ── Custom Title Bar Close Button ── -->
+    <Style Selector="Button.close-btn:pointerover">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.close-btn:pointerover Path">
+      <Setter Property="Stroke" Value="White" />
+    </Style>
+
+    <!-- ── CheckBox customization ── -->
+    <Style Selector="CheckBox">
+      <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+    </Style>
+
+    <!-- ── RadioButton customization ── -->
+    <Style Selector="RadioButton:checked /template/ Border#OuterBorder">
+      <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+    </Style>
+    <Style Selector="RadioButton:checked /template/ Ellipse#CheckGlyph">
+      <Setter Property="Fill" Value="{StaticResource PrimaryBrush}" />
+    </Style>
+
+    <!-- ── TextBox customization ── -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Background" Value="{StaticResource SurfaceContainerLowestBrush}" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+    </Style>
+  </Application.Styles>
+</Application>
