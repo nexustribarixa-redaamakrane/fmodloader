@@ -51,9 +51,22 @@ if (Test-Path "mods") {
 Write-Host "Building Installer..." -ForegroundColor Green
 dotnet publish installer/FModLoaderInstaller.csproj -c Release -f net8.0-windows -r win-x64 --self-contained false -p:PublishSingleFile=true -o Output/publish/installer
 
-# Copy the built installer to Output
-Copy-Item -Path "Output/publish/installer/fModLoader_Setup.exe" -Destination "Output/fModLoader_Setup.exe" -Force
+# Stage the release: installer exe + payload/ side by side
+Write-Host "Staging release package..." -ForegroundColor Green
+New-Item -ItemType Directory -Path "Output/release" -Force | Out-Null
+Copy-Item -Path "Output/publish/installer/fModLoader_Setup.exe" -Destination "Output/release/fModLoader_Setup.exe" -Force
+Copy-Item -Path "Output/payload" -Destination "Output/release/payload" -Recurse -Force
 Remove-Item -Path "Output/publish" -Recurse -Force
 
+# Also keep a standalone copy at the top level for convenience
+Copy-Item -Path "Output/release/fModLoader_Setup.exe" -Destination "Output/fModLoader_Setup.exe" -Force
+
+# Create a zip for GitHub release
+$zipPath = "Output/fModLoader_Setup.zip"
+if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
+Compress-Archive -Path "Output/release/*" -DestinationPath $zipPath
+
 Write-Host "Payload and Installer built successfully!" -ForegroundColor Green
-Write-Host "Setup executable created at: Output/fModLoader_Setup.exe" -ForegroundColor Green
+Write-Host "Setup executable: Output/fModLoader_Setup.exe" -ForegroundColor Green
+Write-Host "Release package:  Output/fModLoader_Setup.zip (upload this to GitHub)" -ForegroundColor Green
+
