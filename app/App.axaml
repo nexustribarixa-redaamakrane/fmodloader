@@ -1,0 +1,100 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:fModLoader.ViewModels"
+             xmlns:views="clr-namespace:fModLoader.Views"
+             x:Class="fModLoader.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://fModLoader/Themes/Colors.axaml" />
+        <ResourceInclude Source="avares://fModLoader/Themes/Typography.axaml" />
+        <ResourceInclude Source="avares://fModLoader/Themes/Shapes.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <Style Selector="TextBlock">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansText}" />
+    </Style>
+
+    <Style Selector="TextBlock.headline">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansStatic}" />
+    </Style>
+
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansStatic}" />
+    </Style>
+
+    <Style Selector="TextBlock.code">
+      <Setter Property="FontFamily" Value="{StaticResource GoogleSansCodeStatic}" />
+    </Style>
+
+    <!-- Accent Button (Primary) -->
+    <Style Selector="Button.accent-btn">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource OnPrimaryBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.15" Easing="QuadraticEaseOut" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.accent-btn:pointerover">
+      <Setter Property="Background" Value="{StaticResource TertiaryBrush}" />
+    </Style>
+    <Style Selector="Button.accent-btn:disabled">
+      <Setter Property="Background" Value="{StaticResource SurfaceVariantBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource OutlineBrush}" />
+    </Style>
+
+    <!-- Secondary Button (Outline) -->
+    <Style Selector="Button.secondary-btn">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="{StaticResource OnSurfaceBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.secondary-btn:pointerover">
+      <Setter Property="Background" Value="{StaticResource SurfaceContainerBrush}" />
+    </Style>
+    <Style Selector="Button.secondary-btn:disabled">
+      <Setter Property="Foreground" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineVariantBrush}" />
+    </Style>
+
+    <!-- CheckBox customization -->
+    <Style Selector="CheckBox">
+      <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
+      <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+    </Style>
+
+    <!-- TextBox customization -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="BorderBrush" Value="{StaticResource OutlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Background" Value="{StaticResource SurfaceContainerLowestBrush}" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+    </Style>
+  </Application.Styles>
+</Application>

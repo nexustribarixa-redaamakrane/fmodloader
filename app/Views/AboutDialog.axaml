@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:fModLoader.ViewModels"
+        x:Class="fModLoader.Views.AboutDialog"
+        x:DataType="vm:AboutDialogViewModel"
+        Title="About fModLoader"
+        Width="400" Height="280"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource SurfaceBrush}">
+
+  <Grid Margin="24">
+    <StackPanel Spacing="12" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Text="{Binding AppName}" FontSize="28" FontWeight="Bold" Classes="headline" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Center"/>
+      <TextBlock Text="{Binding Version}" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource SecondaryBrush}" HorizontalAlignment="Center"/>
+      <TextBlock Text="{Binding Codename}" FontSize="12" FontStyle="Italic" Foreground="{StaticResource OutlineBrush}" HorizontalAlignment="Center"/>
+      <TextBlock Text="{Binding Description}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,12" Foreground="{StaticResource OnSurfaceBrush}"/>
+      <TextBlock Text="{Binding Author}" FontSize="11" Foreground="{StaticResource OutlineBrush}" HorizontalAlignment="Center"/>
+      <Button Content="Close" Classes="secondary-btn" HorizontalAlignment="Center" Click="CloseClick"/>
+    </StackPanel>
+  </Grid>
+</Window>

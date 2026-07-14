@@ -59,7 +59,9 @@ public partial class UninstallingPageViewModel : WizardPageBase
             ProgressValue = 5;
             await Task.Delay(200, _cts.Token);
 
-            var exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            var exePath = Environment.ProcessPath ?? System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+            var exeDir = !string.IsNullOrEmpty(exePath) ? Path.GetDirectoryName(exePath) : AppDomain.CurrentDomain.BaseDirectory;
+            exeDir ??= AppDomain.CurrentDomain.BaseDirectory;
             var uninstallDataPath = Path.Combine(exeDir, "uninstall.dat");
 
             string[]? files = null;

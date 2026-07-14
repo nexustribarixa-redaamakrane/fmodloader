@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:fModLoader.ViewModels"
+        x:Class="fModLoader.Views.FontEditorView"
+        x:DataType="vm:FontEditorViewModel"
+        Title="Font Glyph Editor"
+        Width="900" Height="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource SurfaceBrush}">
+
+  <Grid RowDefinitions="Auto, *, Auto" Margin="16">
+    <!-- Header -->
+    <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,16">
+      <StackPanel Grid.Column="0">
+        <TextBlock Text="Glyph Editor" FontSize="24" Classes="headline" Foreground="{StaticResource PrimaryBrush}"/>
+        <TextBlock Text="Modify glyph outlines and metadata coordinates" FontSize="12" Foreground="{StaticResource OutlineBrush}"/>
+      </StackPanel>
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+        <Button Content="Load Project" Classes="secondary-btn" Command="{Binding LoadProject}" CommandParameter="{Binding $parent[Window]}"/>
+        <Button Content="Save/Export Project" Classes="accent-btn" Command="{Binding SaveProject}" CommandParameter="{Binding $parent[Window]}"/>
+      </StackPanel>
+    </Grid>
+
+    <!-- Main Workspace -->
+    <Grid Grid.Row="1" ColumnDefinitions="240, 8, *">
+      <!-- Left Panel: Character Grid -->
+      <Border Grid.Column="0" Background="{StaticResource SurfaceContainerBrush}" CornerRadius="{StaticResource ShapeMedium}" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="1">
+        <Grid RowDefinitions="Auto, *">
+          <TextBlock Grid.Row="0" Text="Glyph Slots" FontSize="14" FontWeight="Bold" Margin="12,12,12,6" Foreground="{StaticResource SecondaryBrush}"/>
+          <ListBox Grid.Row="1" ItemsSource="{Binding GridCells}" SelectedItem="{Binding SelectedCell, Mode=TwoWay}" Background="Transparent">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="{x:Type vm:GlyphGridCell}">
+                <Grid ColumnDefinitions="Auto, *, Auto" Margin="4">
+                  <Border Grid.Column="0" Width="28" Height="28" Background="{StaticResource PrimaryContainerBrush}" CornerRadius="4" Margin="0,0,8,0">
+                    <TextBlock Text="{Binding CharStr}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="{StaticResource OnPrimaryContainer}"/>
+                  </Border>
+                  <TextBlock Grid.Column="1" Text="{Binding HexStr}" VerticalAlignment="Center"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </Border>
+
+      <!-- Splitter -->
+      <GridSplitter Grid.Column="1" Background="Transparent"/>
+
+      <!-- Right Panel: Editor Canvas & Data -->
+      <Grid Grid.Column="2" ColumnDefinitions="*, *" Margin="8,0,0,0">
+        <!-- SVG Vector Outlines & Input -->
+        <Border Grid.Column="0" Background="{StaticResource SurfaceContainerLowestBrush}" CornerRadius="{StaticResource ShapeMedium}" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="1" Padding="12" Margin="0,0,8,0">
+          <Grid RowDefinitions="Auto, *, Auto">
+            <TextBlock Grid.Row="0" Text="SVG Path Data (d-attribute)" FontWeight="Bold" FontSize="14" Margin="0,0,0,8"/>
+            <TextBox Grid.Row="1" Text="{Binding SvgPathText, Mode=TwoWay}" Watermark="e.g. M 200 0 L 300 700 L 400 0 Z" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,0,0,12"/>
+            
+            <StackPanel Grid.Row="2" Spacing="8">
+              <Grid ColumnDefinitions="*, *">
+                <Button Grid.Column="0" Content="Clear" Classes="secondary-btn" Command="{Binding ClearGlyph}" HorizontalAlignment="Stretch" Margin="0,0,4,0"/>
+                <Button Grid.Column="1" Content="Save Outline" Classes="accent-btn" Command="{Binding SaveGlyph}" HorizontalAlignment="Stretch" Margin="4,0,0,0"/>
+              </Grid>
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <!-- Dynamic Visualization Canvas -->
+        <Border Grid.Column="1" Background="White" CornerRadius="{StaticResource ShapeMedium}" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="1" ClipToBounds="True">
+          <Grid>
+            <!-- Grid Lines Background -->
+            
+            <!-- Axis lines -->
+            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!-- Center lines -->
+              <Line StartPoint="0,200" EndPoint="400,200" Stroke="#40000000" StrokeThickness="1" Width="400" Height="400"/>
+              <Line StartPoint="200,0" EndPoint="200,400" Stroke="#40000000" StrokeThickness="1" Width="400" Height="400"/>
+            </Canvas>
+
+            <!-- Vector Outline Preview -->
+            <Path Data="{Binding SvgPathText}"
+                  Stroke="{StaticResource PrimaryBrush}"
+                  StrokeThickness="3"
+                  Fill="#25CC1A1A"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Width="250" Height="250"/>
+
+            <!-- Guideline Labels -->
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="12" Spacing="2">
+              <TextBlock Text="Scale: 1000 UPM" FontSize="10" Foreground="{StaticResource OutlineBrush}"/>
+              <TextBlock Text="Ascender: 800" FontSize="10" Foreground="{StaticResource OutlineBrush}"/>
+              <TextBlock Text="Descender: -200" FontSize="10" Foreground="{StaticResource OutlineBrush}"/>
+            </StackPanel>
+          </Grid>
+        </Border>
+      </Grid>
+    </Grid>
+
+    <!-- Footer Status -->
+    <Border Grid.Row="2" Background="{StaticResource SurfaceContainerBrush}" CornerRadius="4" Padding="8,4" Margin="0,12,0,0">
+      <TextBlock Text="{Binding EditorStatus}" FontSize="12" Foreground="{StaticResource OnSurfaceBrush}"/>
+    </Border>
+  </Grid>
+</Window>

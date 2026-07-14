@@ -19,13 +19,14 @@ public partial class CloseProgramsPageViewModel : WizardPageBase
     public ObservableCollection<string> RunningProcesses { get; } = new();
 
     [ObservableProperty] private bool _hasRunningProcesses;
+    [ObservableProperty] private bool _canProceed;
 
     public CloseProgramsPageViewModel()
     {
         PageTitle = "Close Programs";
         PageSubtitle = "The following programs must be closed before uninstalling.";
         CanGoBack = true;
-        CanGoNext = false; // Blocked until all processes are closed
+        CanGoNext = true; // Never disable the Next button
 
         _scanTimer = new DispatcherTimer
         {
@@ -74,6 +75,9 @@ public partial class CloseProgramsPageViewModel : WizardPageBase
             RunningProcesses.Add(item);
 
         HasRunningProcesses = RunningProcesses.Count > 0;
-        CanGoNext = !HasRunningProcesses;
+        CanGoNext = true; // Keep Next button enabled
+
+        // If no running processes, we can proceed
+        CanProceed = !HasRunningProcesses;
     }
 }

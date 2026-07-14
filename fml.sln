@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FModLoaderInstaller", "installer\FModLoaderInstaller.csproj", "{7608D400-9417-4FEE-BC87-4347DD29EAD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fModLoader", "app\fModLoader.csproj", "{11A03222-BC02-4A3C-9311-A528BEB69B9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fModLoader.Core", "core\fModLoader.Core.csproj", "{35FCB6D9-B876-43B6-BDCB-DD48D7867AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fModLoader_CLI", "cli\fModLoader_CLI.csproj", "{2B8CB452-6EAD-486D-8FBF-061BE00FECB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,17 @@ Global
 		{7608D400-9417-4FEE-BC87-4347DD29EAD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7608D400-9417-4FEE-BC87-4347DD29EAD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7608D400-9417-4FEE-BC87-4347DD29EAD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A03222-BC02-4A3C-9311-A528BEB69B9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A03222-BC02-4A3C-9311-A528BEB69B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A03222-BC02-4A3C-9311-A528BEB69B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A03222-BC02-4A3C-9311-A528BEB69B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35FCB6D9-B876-43B6-BDCB-DD48D7867AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FCB6D9-B876-43B6-BDCB-DD48D7867AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FCB6D9-B876-43B6-BDCB-DD48D7867AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FCB6D9-B876-43B6-BDCB-DD48D7867AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B8CB452-6EAD-486D-8FBF-061BE00FECB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B8CB452-6EAD-486D-8FBF-061BE00FECB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B8CB452-6EAD-486D-8FBF-061BE00FECB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B8CB452-6EAD-486D-8FBF-061BE00FECB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

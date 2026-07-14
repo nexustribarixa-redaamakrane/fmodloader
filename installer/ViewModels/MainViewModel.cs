@@ -138,6 +138,22 @@ public partial class MainViewModel : ObservableObject
                 NavigateToPage(_currentIndex);
             }
         };
+
+        // Auto-navigate from CloseProgramsPage once all programs are closed
+        closeProgramsPage.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(CloseProgramsPageViewModel.CanProceed) && closeProgramsPage.CanProceed)
+            {
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    if (CurrentPage == closeProgramsPage)
+                    {
+                        _currentIndex = Pages.IndexOf(closeProgramsPage) + 1;
+                        NavigateToPage(_currentIndex);
+                    }
+                });
+            }
+        };
     }
 
     // ── Navigation commands ──────────────────────────────────────────────────
@@ -215,6 +231,13 @@ public partial class MainViewModel : ObservableObject
                     ShowStepIndicator = false;
                 }
             };
+            return;
+        }
+
+        // Block manual navigation if programs need to be closed
+        if (CurrentPage is CloseProgramsPageViewModel closePage && closePage.HasRunningProcesses)
+        {
+            closePage.PageSubtitle = "Cannot proceed: Please close the running fModLoader instances listed below.";
             return;
         }
 

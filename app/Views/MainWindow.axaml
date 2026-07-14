@@ -1,0 +1,125 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:fModLoader.ViewModels"
+        xmlns:models="clr-namespace:fModLoader.Models;assembly=fModLoader.Core"
+        xmlns:ctrl="clr-namespace:fModLoader.Controls"
+        x:Class="fModLoader.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="fModLoader v1.0.6 Beta"
+        Width="850" Height="550"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource SurfaceBrush}">
+
+  <Grid RowDefinitions="Auto, Auto, *, Auto">
+    <!-- Menu Bar -->
+    <Menu Grid.Row="0" Background="{StaticResource SecondaryBrush}">
+      <MenuItem Header="File" Foreground="White">
+        <MenuItem Header="Convert Font to Modcompat" Command="{Binding ConvertFontToModcompat}" CommandParameter="{Binding $parent[Window]}"/>
+        <Separator/>
+        <MenuItem Header="Exit" Click="ExitClick"/>
+      </MenuItem>
+      <MenuItem Header="Mods" Foreground="White">
+        <MenuItem Header="Create Demo Mod" Command="{Binding CreateDemoModFile}"/>
+        <MenuItem Header="Reload Fonts &amp; Mods" Command="{Binding ReloadFontsAndMods}"/>
+      </MenuItem>
+      <MenuItem Header="Tools" Foreground="White">
+        <MenuItem Header="Glyph Vector Editor" Click="OpenGlyphEditorClick"/>
+      </MenuItem>
+      <MenuItem Header="Help" Foreground="White">
+        <MenuItem Header="Documentation" Click="OpenHelpClick"/>
+        <MenuItem Header="About fModLoader" Click="OpenAboutClick"/>
+      </MenuItem>
+    </Menu>
+
+    <!-- Hazard Tape Beta Banner -->
+    <ctrl:HazardTape Grid.Row="1"/>
+
+    <!-- Main Workspace Area -->
+    <Grid Grid.Row="2">
+      <!-- Background overlay -->
+      <ctrl:SurgicalPatternOverlay ShowCrossHatch="True" ShowWatermarks="True" ShowDotGrid="True" PatternOpacity="0.03"/>
+
+      <!-- Inner columns grid -->
+      <Grid ColumnDefinitions="*, 140, *" Margin="32,24">
+        <!-- Left: Target Font Column -->
+        <Border Grid.Column="0" Background="#90FFFFFF" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="1" CornerRadius="{StaticResource ShapeMedium}" Padding="20">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="TARGET FONT" FontSize="15" FontWeight="Bold" Classes="headline" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,12"/>
+            <StackPanel DockPanel.Dock="Bottom" Spacing="8">
+              <Button Content="Browse Font" Classes="secondary-btn" Command="{Binding BrowseFont}" CommandParameter="{Binding $parent[Window]}" HorizontalAlignment="Stretch"/>
+              <Grid ColumnDefinitions="Auto, *" Margin="0,8,0,0">
+                <TextBlock Grid.Column="0" Text="Backup Status: " FontSize="12" Foreground="{StaticResource OutlineBrush}"/>
+                <TextBlock Grid.Column="1" Text="{Binding BackupStatus}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource SecondaryBrush}"/>
+              </Grid>
+            </StackPanel>
+            <ScrollViewer>
+              <StackPanel Spacing="12">
+                <TextBlock Text="Select a font target to patch" FontSize="12" Foreground="{StaticResource OutlineBrush}"/>
+                <ComboBox ItemsSource="{Binding Fonts}" SelectedItem="{Binding SelectedFont, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:FontTarget}">
+                      <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <StackPanel Spacing="4" Margin="0,8,0,0" IsVisible="{Binding SelectedFont, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <TextBlock Text="{Binding SelectedFont.Family, StringFormat='Family: {0}'}" FontSize="12"/>
+                  <TextBlock Text="{Binding SelectedFont.Style, StringFormat='Style: {0}'}" FontSize="12"/>
+                  <TextBlock Text="{Binding SelectedFont.GlyphCount, StringFormat='Glyphs: {0}'}" FontSize="12"/>
+                  <TextBlock Text="{Binding SelectedFont.UnitsPerEm, StringFormat='UPM: {0}'}" FontSize="12"/>
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+
+        <!-- Center: Action column -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
+          <Button Classes="accent-btn" Command="{Binding ApplyMod}" Width="100" Height="100" CornerRadius="50" BorderThickness="2" BorderBrush="White">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+              <TextBlock Text="APPLY" FontWeight="Bold" FontSize="16" Foreground="White" HorizontalAlignment="Center"/>
+              <TextBlock Text="♥" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
+            </StackPanel>
+          </Button>
+
+          <Button Content="REVERT" Classes="secondary-btn" Command="{Binding RevertFont}" IsEnabled="{Binding CanRevert}" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Right: Mod Package Column -->
+        <Border Grid.Column="2" Background="#90FFFFFF" BorderBrush="{StaticResource OutlineVariantBrush}" BorderThickness="1" CornerRadius="{StaticResource ShapeMedium}" Padding="20">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="MOD PACKAGE" FontSize="15" FontWeight="Bold" Classes="headline" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,12"/>
+            <Button DockPanel.Dock="Bottom" Content="Browse Mod" Classes="secondary-btn" Command="{Binding BrowseMod}" CommandParameter="{Binding $parent[Window]}" HorizontalAlignment="Stretch"/>
+            <ScrollViewer>
+              <StackPanel Spacing="12">
+                <TextBlock Text="Select a mod file (.ttfm, .otfm) to apply" FontSize="12" Foreground="{StaticResource OutlineBrush}"/>
+                <ComboBox ItemsSource="{Binding Mods}" SelectedItem="{Binding SelectedMod, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ModMetadata}">
+                      <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <StackPanel Spacing="4" Margin="0,8,0,0" IsVisible="{Binding SelectedMod, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <TextBlock Text="{Binding SelectedMod.Version, StringFormat='Version: {0}'}" FontSize="12"/>
+                  <TextBlock Text="{Binding SelectedMod.Author, StringFormat='Author: {0}'}" FontSize="12"/>
+                  <TextBlock Text="{Binding SelectedMod.Description}" FontSize="11" TextWrapping="Wrap" MaxHeight="60"/>
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+      </Grid>
+    </Grid>
+
+    <!-- Footer / Status Bar -->
+    <Border Grid.Row="3" Background="{StaticResource SurfaceContainerBrush}" Height="36" BorderThickness="0,1,0,0" BorderBrush="{StaticResource OutlineVariantBrush}" Padding="16,0">
+      <Grid ColumnDefinitions="*, 150">
+        <TextBlock Grid.Column="0" Text="{Binding StatusText}" VerticalAlignment="Center" FontSize="12"/>
+        <ctrl:HeartbeatLine Grid.Column="1" StrokeThickness="1.5" Amplitude="0.25" Speed="0.005" Height="36"/>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

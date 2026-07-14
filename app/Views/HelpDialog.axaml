@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:fModLoader.ViewModels"
+        x:Class="fModLoader.Views.HelpDialog"
+        x:DataType="vm:HelpDialogViewModel"
+        Title="Documentation &amp; Help"
+        Width="500" Height="400"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource SurfaceBrush}">
+
+  <DockPanel Margin="24">
+    <TextBlock DockPanel.Dock="Top" Text="{Binding Title}" FontSize="22" Classes="headline" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16"/>
+    <Button DockPanel.Dock="Bottom" Content="Close" Classes="secondary-btn" HorizontalAlignment="Center" Click="CloseClick" Margin="0,16,0,0"/>
+    <ScrollViewer>
+      <StackPanel Spacing="12">
+        <TextBlock Text="What is fModLoader?" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="fModLoader is a vector outline font modding tool that allows you to replace specific character shapes (glyphs) in vector fonts without corrupting other font tables. It reads mod specifications from .ttfm and .otfm zip archives." TextWrapping="Wrap"/>
+        
+        <TextBlock Text="How to Use:" FontWeight="Bold" FontSize="16" Margin="0,12,0,0"/>
+        <TextBlock Text="1. Place your target font (.ttf, .otf, .ttc) in the 'fonts' folder, or convert it to a modcompat font using File -> Convert Font." TextWrapping="Wrap"/>
+        <TextBlock Text="2. Put your .ttfm/.otfm mod files in the 'mods' folder." TextWrapping="Wrap"/>
+        <TextBlock Text="3. Choose the font and the mod in the application, and click APPLY." TextWrapping="Wrap"/>
+        <TextBlock Text="4. To restore the original font, select it and click REVERT." TextWrapping="Wrap"/>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</Window>
