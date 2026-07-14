@@ -49,3 +49,12 @@ Output/
 # .NET
 **/bin/
 **/obj/
+.vs/
+.idea/
+
+# Temporary scratch files and build tools
+reddit_post.txt
+dilemma.md
+make_modcompat.py
+png_to_ico.csx
+tools/
