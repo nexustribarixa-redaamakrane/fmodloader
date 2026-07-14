@@ -58,3 +58,5 @@ dilemma.md
 make_modcompat.py
 png_to_ico.csx
 tools/
+generate_ppt.py
+*.pptx
