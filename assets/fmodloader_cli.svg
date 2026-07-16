@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="termGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2D2D2D"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E53935"/>
+      <stop offset="100%" stop-color="#8B0000"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Terminal window body (Win11 style rounded rect) -->
+  <rect x="16" y="16" width="224" height="200" rx="16" ry="16"
+        fill="url(#termGrad)" stroke="#444" stroke-width="2" filter="url(#shadow)"/>
+
+  <!-- Title bar -->
+  <rect x="16" y="16" width="224" height="36" rx="16" ry="16" fill="#383838"/>
+  <rect x="16" y="36" width="224" height="16" fill="#383838"/>
+
+  <!-- Title bar dots -->
+  <circle cx="40" cy="34" r="5" fill="#FF5F57"/>
+  <circle cx="58" cy="34" r="5" fill="#FFBD2E"/>
+  <circle cx="76" cy="34" r="5" fill="#28C840"/>
+
+  <!-- Prompt line "> _" -->
+  <text x="40" y="96" font-family="Consolas, 'Courier New', monospace"
+        font-size="36" font-weight="bold" fill="#00BFFF">&gt;</text>
+  <text x="68" y="96" font-family="Consolas, 'Courier New', monospace"
+        font-size="36" fill="#AAAAAA">_</text>
+
+  <!-- Second prompt line -->
+  <text x="40" y="140" font-family="Consolas, 'Courier New', monospace"
+        font-size="28" fill="#666666">fml --help</text>
+
+  <!-- Output line -->
+  <text x="40" y="175" font-family="Consolas, 'Courier New', monospace"
+        font-size="20" fill="#4EC9B0">fModLoader CLI v1.0</text>
+
+  <!-- Shield badge (bottom-right) -->
+  <g transform="translate(176, 160) scale(0.38)">
+    <path d="
+      M 100 8
+      L 184 40
+      Q 188 42 188 46
+      L 188 104
+      Q 188 148 144 180
+      L 100 200
+      L 56 180
+      Q 12 148 12 104
+      L 12 46
+      Q 12 42 16 40
+      Z
+    " fill="url(#shieldGrad)" stroke="#6D0000" stroke-width="4" filter="url(#shadow)"/>
+    <text x="100" y="140" text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-weight="bold" font-style="italic"
+          font-size="120" fill="white">f</text>
+  </g>
+</svg>

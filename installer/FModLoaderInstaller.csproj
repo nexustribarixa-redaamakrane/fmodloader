@@ -12,7 +12,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <ApplicationIcon>..\assets\fmodloader.ico</ApplicationIcon>
+    <ApplicationIcon>..\assets\fmodloader_installer.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +26,12 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\Fonts\**\*.ttf" />
     <AvaloniaResource Include="Assets\**\*.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\assets\fmodloader_uninstaller.ico" LogicalName="fmodloader_uninstaller.ico" />
+    <EmbeddedResource Include="..\assets\fmodloader_ttfm.ico" LogicalName="fmodloader_ttfm.ico" />
+    <EmbeddedResource Include="..\assets\fmodloader_otfm.ico" LogicalName="fmodloader_otfm.ico" />
   </ItemGroup>
 
 </Project>

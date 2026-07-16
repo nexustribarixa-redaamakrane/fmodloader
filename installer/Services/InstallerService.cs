@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -98,6 +99,12 @@ public class InstallerService
             var uninstallExePath = Path.Combine(config.TargetDirectory, "uninstall.exe");
             File.Copy(currentExe, uninstallExePath, overwrite: true);
         }
+
+        // --- Extract embedded icon resources ---
+        ExtractEmbeddedIcons(config.TargetDirectory);
+        copiedFiles.Add(Path.Combine(config.TargetDirectory, "fmodloader_uninstaller.ico"));
+        copiedFiles.Add(Path.Combine(config.TargetDirectory, "fmodloader_ttfm.ico"));
+        copiedFiles.Add(Path.Combine(config.TargetDirectory, "fmodloader_otfm.ico"));
 
         report.CompletedFiles = totalFiles;
         report.StatusMessage = "All files copied successfully.";
@@ -261,5 +268,29 @@ public class InstallerService
             }
         }
         return null;
+    }
+
+    /// <summary>
+    /// Extracts embedded icon resources (uninstaller, ttfm, otfm) to the install directory.
+    /// These are referenced by registry entries for file associations and Add/Remove Programs.
+    /// </summary>
+    private void ExtractEmbeddedIcons(string targetDirectory)
+    {
+        var iconNames = new[] { "fmodloader_uninstaller.ico", "fmodloader_ttfm.ico", "fmodloader_otfm.ico" };
+        var assembly = Assembly.GetExecutingAssembly();
+
+        foreach (var name in iconNames)
+        {
+            try
+            {
+                using var stream = assembly.GetManifestResourceStream(name);
+                if (stream == null) continue;
+
+                var destPath = Path.Combine(targetDirectory, name);
+                using var fs = File.Create(destPath);
+                stream.CopyTo(fs);
+            }
+            catch { /* Best effort — icon extraction is non-critical */ }
+        }
     }
 }

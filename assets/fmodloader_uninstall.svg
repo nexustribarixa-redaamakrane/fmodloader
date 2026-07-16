@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EF5350"/>
+      <stop offset="50%" stop-color="#D32F2F"/>
+      <stop offset="100%" stop-color="#8B0000"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="innerShadow">
+      <feComponentTransfer in="SourceAlpha">
+        <feFuncA type="table" tableValues="1 0"/>
+      </feComponentTransfer>
+      <feGaussianBlur stdDeviation="4"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feFlood flood-color="#000" flood-opacity="0.3" result="color"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feComposite in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Do Not Enter circle -->
+  <circle cx="128" cy="128" r="112" fill="url(#redGrad)" stroke="#6D0000" stroke-width="4" filter="url(#shadow)"/>
+
+  <!-- Inner ring highlight -->
+  <circle cx="128" cy="128" r="100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+
+  <!-- White horizontal bar/dash -->
+  <rect x="48" y="108" width="160" height="40" rx="8" ry="8" fill="white" filter="url(#shadow)"/>
+</svg>

@@ -19,13 +19,15 @@ public class RegistryService
         // ── .TTFM → fModLoader ──────────────────────────────────────────
         if (config.AssocTtfm)
         {
-            WriteAssociation(".ttfm", "fModLoader.ttfm", "fModLoader Mod Package", appPath);
+            var iconPath = System.IO.Path.Combine(config.TargetDirectory, "fmodloader_ttfm.ico");
+            WriteAssociation(".ttfm", "fModLoader.ttfm", "fModLoader Mod Package", appPath, iconPath);
         }
 
         // ── .OTFM → fModLoader ──────────────────────────────────────────
         if (config.AssocOtfm)
         {
-            WriteAssociation(".otfm", "fModLoader.otfm", "fModLoader OTF Mod Package", appPath);
+            var iconPath = System.IO.Path.Combine(config.TargetDirectory, "fmodloader_otfm.ico");
+            WriteAssociation(".otfm", "fModLoader.otfm", "fModLoader OTF Mod Package", appPath, iconPath);
         }
 
         // ── .MODCOMPAT extensions → OpenWithProgIds ─────────────────────
@@ -80,6 +82,7 @@ public class RegistryService
         key.SetValue("Publisher", config.AppPublisher);
         key.SetValue("InstallLocation", config.TargetDirectory);
         key.SetValue("UninstallString", $"\"{uninstallExe}\"");
+        key.SetValue("DisplayIcon", System.IO.Path.Combine(config.TargetDirectory, "fmodloader_uninstaller.ico"));
         key.SetValue("URLInfoAbout", config.AppUrl);
         key.SetValue("URLUpdateInfo", $"{config.AppUrl}/releases");
         key.SetValue("HelpLink", $"{config.AppUrl}/issues");
@@ -120,7 +123,7 @@ public class RegistryService
 
     // ── Private helpers ─────────────────────────────────────────────────────
 
-    private void WriteAssociation(string ext, string progId, string description, string appPath)
+    private void WriteAssociation(string ext, string progId, string description, string appPath, string iconPath)
     {
         using var extKey = Registry.ClassesRoot.CreateSubKey(ext);
         extKey?.SetValue("", progId);
@@ -129,7 +132,7 @@ public class RegistryService
         progKey?.SetValue("", description);
 
         using var iconKey = Registry.ClassesRoot.CreateSubKey($@"{progId}\DefaultIcon");
-        iconKey?.SetValue("", $"{appPath},0");
+        iconKey?.SetValue("", iconPath);
 
         using var cmdKey = Registry.ClassesRoot.CreateSubKey($@"{progId}\shell\open\command");
         cmdKey?.SetValue("", $"\"{appPath}\" \"%1\"");

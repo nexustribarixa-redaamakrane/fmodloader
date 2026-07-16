@@ -7,6 +7,9 @@ if (-not $ScriptDir) {
 }
 Set-Location $ScriptDir
 
+Write-Host "Generating icons..." -ForegroundColor Green
+python generate_icons.py
+
 Write-Host "Cleaning Output/ directory..." -ForegroundColor Green
 if (Test-Path "Output") {
     Remove-Item -Path "Output/*" -Recurse -Force -ErrorAction SilentlyContinue
@@ -37,6 +40,12 @@ if (Test-Path "fonts") {
 if (Test-Path "mods") {
     Write-Host "Packaging mods..." -ForegroundColor Green
     Copy-Item -Path "mods" -Destination "Output/payload/mods" -Recurse -Force
+}
+if (Test-Path "assets") {
+    Write-Host "Packaging assets..." -ForegroundColor Green
+    Copy-Item -Path "assets" -Destination "Output/payload/assets" -Recurse -Force
+    # Remove build scripts and temp dirs from payload — only keep the .ico files
+    Get-ChildItem -Path "Output/payload/assets" -Include "*.ps1","*.py","_iconbuild" -Recurse | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 # Recreate empty/placeholder directories that the installer might expect if not present

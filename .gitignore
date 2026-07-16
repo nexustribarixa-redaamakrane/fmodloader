@@ -59,4 +59,6 @@ make_modcompat.py
 png_to_ico.csx
 tools/
 generate_ppt.py
+generate_icons.py
+fmodloader_presentation.pptx
 *.pptx

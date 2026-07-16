@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8D6E63"/>
+      <stop offset="100%" stop-color="#5D4037"/>
+    </linearGradient>
+    <linearGradient id="boxTopGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A1887F"/>
+      <stop offset="100%" stop-color="#795548"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E53935"/>
+      <stop offset="100%" stop-color="#8B0000"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Box body (3D perspective) -->
+  <!-- Front face -->
+  <path d="M 36 100 L 220 100 L 220 220 L 36 220 Z"
+        fill="url(#boxGrad)" stroke="#4E342E" stroke-width="2"/>
+  <!-- Top face (flap open) -->
+  <path d="M 36 100 L 68 56 L 252 56 L 220 100 Z"
+        fill="url(#boxTopGrad)" stroke="#4E342E" stroke-width="2"/>
+  <!-- Right side face -->
+  <path d="M 220 100 L 252 56 L 252 176 L 220 220 Z"
+        fill="#6D4C41" stroke="#4E342E" stroke-width="2"/>
+
+  <!-- Box tape/stripe -->
+  <rect x="110" y="100" width="28" height="120" fill="#FDD835" opacity="0.7"/>
+
+  <!-- Down arrow (install) -->
+  <g filter="url(#shadow)">
+    <rect x="112" y="10" width="20" height="55" rx="4" fill="url(#arrowGrad)"/>
+    <polygon points="122,90 150,60 94,60" fill="url(#arrowGrad)"/>
+  </g>
+
+  <!-- Shield badge (bottom-right corner) -->
+  <g transform="translate(168, 158) scale(0.32)">
+    <path d="
+      M 100 8
+      L 184 40
+      Q 188 42 188 46
+      L 188 104
+      Q 188 148 144 180
+      L 100 200
+      L 56 180
+      Q 12 148 12 104
+      L 12 46
+      Q 12 42 16 40
+      Z
+    " fill="url(#shieldGrad)" stroke="#6D0000" stroke-width="5" filter="url(#shadow)"/>
+    <text x="100" y="140" text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-weight="bold" font-style="italic"
+          font-size="120" fill="white">f</text>
+  </g>
+</svg>
