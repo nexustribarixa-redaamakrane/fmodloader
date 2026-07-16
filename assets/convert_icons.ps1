@@ -41,9 +41,9 @@ foreach ($entry in $Icons.GetEnumerator()) {
         continue
     }
 
-    Write-Host "Converting $svgName → $icoName ..." -ForegroundColor Cyan
+    Write-Host "Converting $svgName -> $icoName ..." -ForegroundColor Cyan
 
-    # ── Step 1: Create a wrapper HTML that renders the SVG at 256x256 ──
+    # -- Step 1: Create a wrapper HTML that renders the SVG at 256x256 --
     $svgContent = Get-Content $svgPath -Raw
     $htmlPath = Join-Path $TempDir "${svgName}.html"
     $htmlContent = @"
@@ -61,25 +61,28 @@ $svgContent
 "@
     Set-Content -Path $htmlPath -Value $htmlContent -Encoding UTF8
 
-    # ── Step 2: SVG → PNG via Chrome headless ──
+    # -- Step 2: SVG -> PNG via Chrome headless --
     $pngPath = Join-Path $TempDir "${svgName}_256.png"
     $fileUri = "file:///$($htmlPath -replace '\\','/')"
     
-    & $Chrome --headless --disable-gpu --no-sandbox `
-        --window-size=256,256 `
-        --default-background-color=0 `
-        --screenshot="$pngPath" `
-        "$fileUri" 2>&1 | Out-Null
-
-    Start-Sleep -Milliseconds 500
+    $argList = @(
+        "--headless=new",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--window-size=256,256",
+        "--default-background-color=00000000",
+        "--screenshot=""$pngPath""",
+        """$fileUri"""
+    )
+    Start-Process -FilePath $Chrome -ArgumentList $argList -Wait -NoNewWindow | Out-Null
 
     if (-not (Test-Path $pngPath)) {
         Write-Host "  ERROR: PNG render failed for $svgName" -ForegroundColor Red
         continue
     }
-    Write-Host "  SVG → PNG (256x256) ✓" -ForegroundColor DarkGray
+    Write-Host "  SVG -> PNG (256x256) [OK]" -ForegroundColor DarkGray
 
-    # ── Step 3: Create multi-size PNGs by resizing ──
+    # -- Step 3: Create multi-size PNGs by resizing --
     $masterBmp = [System.Drawing.Bitmap]::new($pngPath)
     $bitmaps = @()
 
@@ -89,7 +92,7 @@ $svgContent
     }
     $masterBmp.Dispose()
 
-    # ── Step 4: Build ICO file manually ──
+    # -- Step 4: Build ICO file manually --
     # ICO format: header (6 bytes) + entries (16 bytes each) + PNG data
     $ms = [System.IO.MemoryStream]::new()
     $bw = [System.IO.BinaryWriter]::new($ms)
@@ -140,9 +143,9 @@ $svgContent
     $ms.Dispose()
     foreach ($bmp in $bitmaps) { $bmp.Dispose() }
 
-    Write-Host "  PNG → ICO ✓ ($($Sizes -join ", ")px)" -ForegroundColor DarkGray
+    Write-Host "  PNG -> ICO [OK] ($($Sizes -join ', ')px)" -ForegroundColor DarkGray
     $sizeStr = "{0:N0}" -f (Get-Item $icoPath).Length
-    Write-Host "  ✓ $icoName.ico created ($sizeStr bytes)" -ForegroundColor Green
+    Write-Host "  [OK] $icoName.ico created ($sizeStr bytes)" -ForegroundColor Green
 }
 
 # Clean up temp

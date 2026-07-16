@@ -8,7 +8,7 @@ if (-not $ScriptDir) {
 Set-Location $ScriptDir
 
 Write-Host "Generating icons..." -ForegroundColor Green
-python generate_icons.py
+powershell -ExecutionPolicy Bypass -File assets/convert_icons.ps1
 
 Write-Host "Cleaning Output/ directory..." -ForegroundColor Green
 if (Test-Path "Output") {
