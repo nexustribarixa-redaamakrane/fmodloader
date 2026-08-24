@@ -115,7 +115,7 @@ public static class Tui
         Console.WriteLine(Reset);
 
         string title = "fModLoader CLI";
-        string version = "v1.0.6 BETA";
+        string version = "v1.0.65 BETA";
         int pad = w - 4 - title.Length - version.Length - 3;
         Console.Write($"  {AccentBold}{title}{Reset}");
         Console.Write(new string(' ', Math.Max(pad, 1)));

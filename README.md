@@ -2,13 +2,13 @@
 
 <div align="center">
 
-![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.6%20BETA-cc1a1a?style=for-the-badge&logo=python&logoColor=white)
+![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.65%20BETA-cc1a1a?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=for-the-badge)
-![Python](https://img.shields.io/badge/python-3.9%2B-yellow?style=for-the-badge)
+![C++](https://img.shields.io/badge/C%2B%2B-AvaloniaUI-blue?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-BETA-orange?style=for-the-badge)
 
 **A sleek, open-source desktop utility for dynamic font glyph modification.**
-Built with a secure Python (PyQt6 + fontTools) architecture.
+Built with a secure C++ (AvaloniaUI) architecture.
 
 *Open-source • Vibecoded • Community-driven*
 
@@ -41,10 +41,10 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 
 ## Changelog
 
-### v1.0.6 BETA — "Project Horde" *(current)*
+### v1.0.65 BETA — "Project Horde" *(current)*
 
 **🆕 Changes**
-- Version bump for BETA-v1.0.6-beta
+- Version bump for BETA-v1.0.65-beta
 
 ### v1.0.4 BETA — "Project Vectoris"
 
@@ -60,9 +60,9 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
   - Freehand Pencil tool
   - Node editor with drag handles
   - Zoom (scroll wheel + dedicated tool) and Pan (Space/H)
-- **GlyphData Vector Model** — New `glyph_model.py` with `PathNode`, `GlyphContour`, `GlyphData`, and `ModProject` dataclasses providing clean separation between UI and data
+- **GlyphData Vector Model** — New `GlyphData` model with `PathNode`, `GlyphContour`, `GlyphData`, and `ModProject` classes providing clean separation between UI and data
 - **ModProject Serialization** — Full `.ttfm`/`.otfm` ZIP-based mod save/load with `metadata.json` and per-glyph SVG export
-- **Advanced File Dialog** (`ui_file_dialog.py`) — Custom FML file picker with:
+- **Advanced File Dialog** — Native file picker with:
   - Bookmark panel (quick-access saved paths)
   - Back/Forward/Up navigation history
   - Dynamic filter bar for file type selection
@@ -73,17 +73,17 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 - **Glyph Info Dialog** — View and edit Unicode value, glyph name, and comments per glyph
 - **Comprehensive Keyboard Shortcuts** — Full shortcut coverage across all windows (see [Keyboard Shortcuts](#keyboard-shortcuts))
 - **Global Exception Handler** — Unhandled exceptions now display a styled diagnostic report dialog instead of silently crashing
-- **CLI Helper** — Added `make_modcompat.py` for batch font conversion
+- **CLI Helper** — Added `make-modcompat` command for batch font conversion
 - **FontForge Plugin** — Added `ff_fml_plugin.py` skeleton for external use
 - Improved mod handler ZIP extraction and metadata validation
 
 **🐛 Bug Fixes**
-- Fixed `QFont::setPointSize: Point size <= 0 (-1)` runtime warning across all UI files — replaced all dynamic `QFont(family, size)` constructor calls with `setPixelSize()` to be DPI-safe
-- Fixed `SyntaxWarning: invalid escape sequence '\W'` in `make_modcompat.py` docstring
-- Fixed crash when opening Glyph Canvas via "Apply SVG to Selected" — `self` (parent widget) was incorrectly passed as `glyph_data` argument
-- Fixed `scene.clear()` causing a dangling C++ pointer crash — `_clear_all()` now removes items individually, preserving the canvas `path_item`
-- Fixed `QPen(..., cosmetic=True)` invalid keyword argument TypeError in `GlyphCellWidget.paintEvent` causing silent rendering failure
-- Fixed double-invocation of the canvas dialog on glyph double-click — removed redundant `cellDoubleClicked` signal connection
+- Fixed DPI-related point-size warnings across all views — replaced all dynamic font sizing with pixel-size based rendering to be DPI-safe
+- Fixed invalid escape sequence warnings in the CLI helper docstring
+- Fixed crash when opening Glyph Canvas via "Apply SVG to Selected" — parent control was incorrectly passed as `glyph_data` argument
+- Fixed canvas clear causing a dangling native pointer crash — `_clear_all()` now removes items individually, preserving the canvas path item
+- Fixed invalid pen arguments in `GlyphCellWidget` paint routine causing silent rendering failure
+- Fixed double-invocation of the canvas dialog on glyph double-click — removed redundant event connection
 - Fixed `save_to_glyph_data(None)` crash in `GlyphCanvasDialog.done()` — now guarded with `if self.glyph_data is not None`
 
 ---
@@ -93,19 +93,19 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 **Features**
 - Dynamic font glyph modding engine
 - Strict dual-file dependency system (`.modcompat` + `.ttfm`/`.otfm`)
-- Modern PyQt6 UI with animated hazard tape banner and heartbeat status line
+- Modern AvaloniaUI with animated hazard tape banner and heartbeat status line
 - Custom animated splash screen
-- Mod scanning and application via `font_handler.py` + `mod_handler.py`
+- Mod scanning and application via `FontHandlerService` + `ModHandlerService`
 - `create_modcompat_font()` — converts any TTF/OTF to a mod-compatible font with `FMOD` vendor ID marker
 - Backup/restore system for safe font patching
 - About and Help dialogs
-- Global `sys.excepthook` error handler
+- Global exception handler
 
 ---
 
 ## Features
 
-| Feature | v1.0.1 | v1.0.6 |
+| Feature | v1.0.1 | v1.0.65 |
 |---|:---:|:---:|
 | Apply font mods (.ttfm/.otfm) | ✅ | ✅ |
 | Create modcompat fonts | ✅ | ✅ |
@@ -128,34 +128,34 @@ fModLoader (FML) is an open-source desktop application for dynamic font glyph mo
 ## Architecture
 
 ```
-fml/
-├── main.py                # Entry point: high-DPI, splash screen, app init, global exception handler
-├── ui_main_window.py      # Main window: font/mod selection, apply engine, menu bar
-├── ui_font_editor.py      # Built-in font editor: glyph grid, canvas dialog, drawing tools
-├── ui_glyph_canvas.py     # Standalone glyph canvas widget (alternate embedding)
-├── ui_file_dialog.py      # Custom FML file dialog with bookmarks & navigation
-├── ui_about_dialog.py     # About dialog
-├── ui_help_dialog.py      # Help & manual dialog
-├── font_handler.py        # Backend: modcompat creation, backup, mod application (fontTools)
-├── mod_handler.py         # Mod package loading, validation, GLIF extraction
-├── glyph_model.py         # Data model: PathNode, GlyphContour, GlyphData, ModProject
-├── make_modcompat.py      # CLI helper: batch-convert fonts to .modcompat
-├── ff_fml_plugin.py       # FontForge plugin skeleton (external use)
-├── fonts/                 # Default scan directory for .modcompat fonts
-├── mods/                  # Default scan directory for .ttfm/.otfm mods
-└── icons/                 # SVG tool icons for the glyph editor toolbar
+fmodloader/
+├── app/                        # AvaloniaUI desktop application (entry point, views, view models)
+│   ├── Program.cs              # Entry point: app init, splash screen, global exception handler
+│   ├── Views/                  # MainWindow, FontEditorView, AboutDialog, HelpDialog
+│   ├── ViewModels/             # MVVM logic for all windows
+│   ├── Controls/               # HazardTape, HeartbeatLine, SurgicalPatternOverlay
+│   └── Themes/                 # Colors, Shapes, Typography resource dictionaries
+├── core/                       # fModLoader.Core library (backend engine)
+│   ├── Models/                 # FontTarget, GlyphData, ModMetadata
+│   └── Services/               # FontHandlerService, ModHandlerService,
+│                               # BackupService, FontDiscoveryService, SvgPathParser
+├── cli/                        # fModLoader_CLI: terminal UI + batch commands
+├── installer/                  # Windows installer
+├── fonts/                      # Default scan directory for .modcompat fonts
+├── mods/                       # Default scan directory for .ttfm/.otfm mods
+├── icons/                      # SVG tool icons for the glyph editor toolbar
+└── assets/                     # Application icon and shared resources
 ```
 
 ---
 
 ## Prerequisites
 
-- **Python 3.9+**
-- **PyQt6** — UI framework
-- **fontTools** — Font parsing & engineering backend
+- **C++ / AvaloniaUI** — Application framework & UI
+- **.NET SDK 6.0, 7.0 or 8.0** — Build toolchain
 
 ```bash
-pip install PyQt6 fontTools
+dotnet restore fml.sln
 ```
 
 ---
@@ -167,12 +167,12 @@ pip install PyQt6 fontTools
 git clone https://github.com/nexustribarixa-redaamakrane/fmodloader.git
 cd fmodloader
 
-# 2. Install dependencies
-pip install PyQt6 fontTools
+# 2. Restore dependencies and build
+dotnet build fml.sln
 
-# 3. (Optional) Convert fonts to modcompat format
-python make_modcompat.py           # converts popular Windows fonts
-python make_modcompat.py --all-windows  # converts ALL fonts in C:\Windows\Fonts
+# 3. (Optional) Convert fonts to modcompat format via the CLI
+dotnet run --project cli -- make-modcompat            # converts popular Windows fonts
+dotnet run --project cli -- make-modcompat --all-windows  # converts ALL fonts in C:\Windows\Fonts
 ```
 
 ---
@@ -180,7 +180,7 @@ python make_modcompat.py --all-windows  # converts ALL fonts in C:\Windows\Fonts
 ## Usage
 
 ```bash
-python main.py
+dotnet run --project app
 ```
 
 ### Workflow
@@ -259,7 +259,7 @@ python main.py
 
 Created affectionately by **Nexus Tribarixa** ([@nexustribarixa-redaamakrane](https://github.com/nexustribarixa-redaamakrane)).
 
-We actively need community help! Whether you're a font engineer, Python developer, UI designer, or enthusiastic tester — your contribution matters:
+We actively need community help! Whether you're a font engineer, C++ developer, UI designer, or enthusiastic tester — your contribution matters:
 
 - 🐛 [Report bugs](https://github.com/nexustribarixa-redaamakrane/fmodloader/issues)
 - 🔀 Submit pull requests
@@ -279,6 +279,6 @@ See [LICENSE](LICENSE) for details.
 
 *Open-source • Vibecoded • Community-driven*
 
-**fModLoader v1.0.6 BETA — "Project Horde"**
+**fModLoader v1.0.65 BETA — "Project Horde"**
 
 </div>

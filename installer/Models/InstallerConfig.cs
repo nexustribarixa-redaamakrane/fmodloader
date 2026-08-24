@@ -6,9 +6,9 @@ namespace FModLoaderInstaller.Models;
 public class InstallerConfig
 {
     // ── Identity ────────────────────────────────────────────────────────────
-    public string AppName { get; } = "fModLoader BETA v1.0.6";
+    public string AppName { get; } = "fModLoader BETA v1.0.65";
     public string AppShortName { get; } = "fModLoader";
-    public string AppVersion { get; } = "1.0.6";
+    public string AppVersion { get; } = "1.0.65";
     public string AppPublisher { get; } = "Nexus Tribarixa";
     public string AppUrl { get; } = "https://github.com/nexustribarixa-redaamakrane/fmodloader";
     public string AppExeName { get; } = "fModLoader.exe";

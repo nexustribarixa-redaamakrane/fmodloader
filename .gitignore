@@ -1,9 +1,15 @@
-# Python
+# C++
+*.o
+*.obj
+*.pdb
+*.ilk
+*.exp
+
+# Python helpers (still used: script execution environment + FontForge plugin)
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
 env/
 build/
 develop-eggs/
@@ -42,7 +48,7 @@ Thumbs.db
 # Virtual Environment
 .venv/
 
-# PyInstaller
+# Packaging
 *.spec
 Output/
 

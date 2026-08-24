@@ -18,14 +18,14 @@ public partial class FinishPageViewModel : WizardPageBase
         if (isUninstall)
         {
             PageTitle = "Uninstallation Complete";
-            PageSubtitle = "fModLoader BETA v1.0.6 has been removed successfully.";
+            PageSubtitle = "fModLoader BETA v1.0.65 has been removed successfully.";
             _launchAfterInstall = false;
         }
         else
         {
             _launchAfterInstall = config.LaunchAfterInstall;
             PageTitle = "Installation Complete";
-            PageSubtitle = "fModLoader BETA v1.0.6 has been installed successfully.";
+            PageSubtitle = "fModLoader BETA v1.0.65 has been installed successfully.";
         }
 
         CanGoBack = false;
@@ -41,9 +41,9 @@ public partial class FinishPageViewModel : WizardPageBase
     public bool ShowLaunchOption => !_isUninstall;
 
     public string FinishMessage => _isUninstall
-        ? "fModLoader BETA v1.0.6 has been successfully removed from your computer.\n\n" +
+        ? "fModLoader BETA v1.0.65 has been successfully removed from your computer.\n\n" +
           "Thank you for using fModLoader."
-        : "fModLoader BETA v1.0.6 has been successfully installed on your computer.\n\n" +
+        : "fModLoader BETA v1.0.65 has been successfully installed on your computer.\n\n" +
           "The application may be launched by selecting the installed shortcuts.";
 }
 
