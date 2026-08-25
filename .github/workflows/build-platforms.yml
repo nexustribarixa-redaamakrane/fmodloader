@@ -64,7 +64,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: freebsd-packages
-          path: dist/fModLoader-*-freebsd-x64.tar.xz
+          path: dist/fModLoader-*-freebsd*.tar.xz
           if-no-files-found: warn
 
   windows:
