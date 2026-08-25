@@ -86,7 +86,7 @@ fModLoader (FML) applies .ttfm/.otfm glyph mods onto compatible
 (.modcompat) TrueType/OpenType fonts. Includes CLI helper.
 
 %prep
-%setup -q
+%setup -c -q
 
 %install
 mkdir -p %{buildroot}

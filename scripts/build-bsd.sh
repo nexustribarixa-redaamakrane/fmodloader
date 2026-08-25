@@ -23,8 +23,8 @@ pack_tar() {
 GEN="$DIST/unix-generic"
 rm -rf "$GEN"
 log "=== unix-generic (framework-dependent) ==="
-dotnet publish "$FML_ROOT/cli/fModLoader_CLI.csproj" -c Release -f net8.0 -o "$GEN"
-dotnet publish "$FML_ROOT/app/fModLoader.csproj" -c Release -f net8.0 -o "$GEN"
+dotnet publish "$FML_ROOT/cli/fModLoader_CLI.csproj" -c Release -f net8.0 -p:UseAppHost=false -o "$GEN"
+dotnet publish "$FML_ROOT/app/fModLoader.csproj" -c Release -f net8.0 -p:UseAppHost=false -o "$GEN"
 cat > "$GEN/README.txt" <<EOF
 fModLoader $VERSION — generic Unix build
 
@@ -60,7 +60,6 @@ else
     warn "Repacking the framework-dependent build for FreeBSD instead."
     mkdir -p "$FB"
     cp -r "$GEN/." "$FB/"
-    sed -i 's/generic Unix build/generic Unix build (also for FreeBSD)/' "$FB/README.txt" 2>/dev/null || true
     pack_tar "freebsd-unix-generic" "$FB"
 fi
 
