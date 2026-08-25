@@ -1,0 +1,37 @@
+name: fmodloader
+base: core24
+version: "1.0.65"
+summary: Dynamic font glyph modification utility
+description: |
+  fModLoader (FML) is an open-source desktop application for dynamic font
+  glyph modification. It allows font artists, modders, and developers to
+  create, edit, and apply custom glyph modifications onto compatible
+  (.modcompat) font files — without requiring commercial font editors.
+
+grade: devel
+confinement: strict
+
+apps:
+  fmodloader:
+    command: fModLoader
+    extensions: [gnome]
+    plugs:
+      - home
+      - removable-media
+
+  cli:
+    command: fModLoader_CLI
+    plugs:
+      - home
+      - removable-media
+
+parts:
+  fmodloader:
+    plugin: nil
+    source: .
+    build-snaps:
+      - dotnet-sdk/latest/stable
+    override-build: |
+      export DOTNET_CLI_TELEMETRY_OPTOUT=1
+      dotnet publish app/fModLoader.csproj -c Release -f net8.0 -r linux-x64 --self-contained true -p:PublishSingleFile=true -o "$SNAPCRAFT_PART_INSTALL"
+      dotnet publish cli/fModLoader_CLI.csproj -c Release -f net8.0 -r linux-x64 --self-contained true -p:PublishSingleFile=true -o "$SNAPCRAFT_PART_INSTALL"

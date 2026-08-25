@@ -1,0 +1,19 @@
+# PKGBUILD skeleton for Arch Linux / pacman-based systems
+pkgname=fmodloader
+pkgver=1.0.65
+pkgrel=1
+pkgdesc="Dynamic font glyph modification utility for .modcompat fonts"
+arch=('x86_64')
+url="https://github.com/nexustribarixa-redaamakrane/fmodloader"
+license=('GPL3')
+provides=('fmodloader')
+conflicts=('fmodloader')
+source=("fModLoader-$pkgver-linux-x64.tar.xz::https://github.com/nexustribarixa-redaamakrane/fmodloader/releases/download/BETA-v$pkgver-beta/fModLoader-$pkgver-linux-x64.tar.xz")
+sha256sums=('SKIP')
+
+package() {
+    install -Dm755 "$srcdir/fModLoader" "$pkgdir/usr/bin/fModLoader"
+    install -Dm755 "$srcdir/fModLoader_CLI" "$pkgdir/usr/bin/fModLoader_CLI"
+    install -Dm644 "$srcdir/fmodloader.desktop" "$pkgdir/usr/share/applications/fmodloader.desktop"
+    install -Dm644 "$srcdir/fmodloader.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/fmodloader.svg"
+}

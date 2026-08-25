@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=fModLoader
+GenericName=Font Glyph Mod Loader
+Comment=Dynamic font glyph modification for .modcompat fonts
+Exec=fModLoader
+TryExec=fModLoader
+Icon=fmodloader
+Terminal=false
+Categories=Graphics;Utility;Development;
+StartupWMClass=fModLoader
+MimeType=application/x-ttfm;application/x-otfm;
+Keywords=font;glyph;mod;loader;typography;

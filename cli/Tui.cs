@@ -87,21 +87,25 @@ public static class Tui
         if (!OperatingSystem.IsWindows()) return;
         try
         {
-            var handle = GetStdHandle(-11); // STD_OUTPUT_HANDLE
-            GetConsoleMode(handle, out uint mode);
-            SetConsoleMode(handle, mode | 0x0004); // ENABLE_VIRTUAL_TERMINAL_PROCESSING
+            var handle = Win32.GetStdHandle(-11); // STD_OUTPUT_HANDLE
+            Win32.GetConsoleMode(handle, out uint mode);
+            Win32.SetConsoleMode(handle, mode | 0x0004); // ENABLE_VIRTUAL_TERMINAL_PROCESSING
         }
         catch { /* Best effort */ }
     }
 
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern IntPtr GetStdHandle(int nStdHandle);
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    private static class Win32
+    {
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        internal static extern IntPtr GetStdHandle(int nStdHandle);
 
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        internal static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
 
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        internal static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
+    }
 
     // ── High-Level Rendering ────────────────────────────────────────────
 
@@ -240,10 +244,10 @@ public static class Tui
         SectionEnd();
 
         Section("Examples");
-        ListItem("fModLoader_CLI apply arial.modcompat.ttf mymod.ttfm");
-        ListItem("fModLoader_CLI make-modcompat C:\\Windows\\Fonts\\arial.ttf --output ./fonts");
-        ListItem("fModLoader_CLI info arial.modcompat.ttf");
-        ListItem("fModLoader_CLI scan-fonts C:\\Windows\\Fonts");
+        ListItem("fModLoader_CLI apply <font>.modcompat.ttf mymod.ttfm");
+        ListItem("fModLoader_CLI make-modcompat <font.ttf> --output ./fonts");
+        ListItem("fModLoader_CLI info <font>.modcompat.ttf");
+        ListItem("fModLoader_CLI scan-fonts <font-directory>");
         SectionEnd();
 
         Section("File Types");

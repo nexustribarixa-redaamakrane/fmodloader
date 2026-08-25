@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.nexustribarixa.fModLoader</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>fModLoader</name>
+  <summary>Sleek desktop utility for dynamic font glyph modification</summary>
+  <description>
+    <p>
+      fModLoader (FML) is an open-source desktop application for dynamic font
+      glyph modification. It allows font artists, modders, and developers to
+      create, edit, and apply custom glyph modifications onto compatible
+      (.modcompat) font files — without requiring commercial font editors.
+    </p>
+    <p>
+      Mods are packaged as .ttfm (TrueType) or .otfm (OpenType) files and can
+      be applied, previewed and reverted with a built-in backup system.
+    </p>
+  </description>
+  <launchable type="desktop-id">fmodloader.desktop</launchable>
+  <url type="homepage">https://github.com/nexustribarixa-redaamakrane/fmodloader</url>
+  <url type="bugtracker">https://github.com/nexustribarixa-redaamakrane/fmodloader/issues</url>
+  <developer_name>Nexus Tribarixa</developer_name>
+  <content_rating type="oars-1.1" />
+  <provides>
+    <binary>fModLoader</binary>
+    <binary>fModLoader_CLI</binary>
+    <mediatype>application/x-ttfm</mediatype>
+    <mediatype>application/x-otfm</mediatype>
+  </provides>
+  <releases>
+    <release version="1.0.65" date="2026-08-25" type="beta">
+      <description><p>BETA-v1.0.65-beta — "Project Horde". Cross-platform release.</p></description>
+    </release>
+  </releases>
+</component>

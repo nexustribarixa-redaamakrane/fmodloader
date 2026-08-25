@@ -255,6 +255,28 @@ dotnet run --project app
 
 ---
 
+## Platform Packages
+
+Prebuilt binaries are produced by CI (`.github/workflows/build-platforms.yml`) on every `BETA-v*` tag:
+
+| Platform | Formats |
+|---|---|
+| **Windows** | `.exe` installer, `win-x64` self-contained binaries |
+| **Linux** | `.deb`, `.rpm`, `.AppImage`, `tar.xz` (x64 + arm64), Flatpak, Snap |
+| **macOS** | `.app` bundle + `.dmg` (x64 + arm64) |
+| **FreeBSD / Unix** | self-contained `tar.xz` or framework-dependent bundle |
+
+Build locally on any host:
+
+```bash
+bash scripts/build-all.sh          # auto-detects OS
+bash scripts/build-linux.sh        # tar/deb/rpm/AppImage
+bash scripts/build-macos.sh        # .app + .dmg
+bash scripts/build-bsd.sh          # FreeBSD / generic Unix
+```
+
+---
+
 ## Contributing
 
 Created affectionately by **Nexus Tribarixa** ([@nexustribarixa-redaamakrane](https://github.com/nexustribarixa-redaamakrane)).

@@ -458,6 +458,49 @@ static int RunMakeModcompat(string[] args)
     return failCount > 0 ? 1 : 0;
 }
 
+// ── Default font directories per OS ─────────────────────────────────────────
+static List<string> DefaultFontDirs()
+{
+    var dirs = new List<string>();
+
+    if (OperatingSystem.IsWindows())
+    {
+        string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+        if (windir.Length > 0) dirs.Add(Path.Combine(windir, "Fonts"));
+
+        string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        if (localAppData.Length > 0)
+            dirs.Add(Path.Combine(localAppData, "Microsoft", "Windows", "Fonts"));
+    }
+    else if (OperatingSystem.IsMacOS())
+    {
+        dirs.Add("/System/Library/Fonts");
+        dirs.Add("/Library/Fonts");
+        string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        dirs.Add(Path.Combine(home, "Library", "Fonts"));
+    }
+    else
+    {
+        // Linux, FreeBSD and other Unix-like systems
+        string xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ?? "";
+        string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        if (!string.IsNullOrEmpty(home))
+            dirs.Add(Path.Combine(home, ".fonts"));
+
+        if (!string.IsNullOrEmpty(xdgDataHome))
+            dirs.Add(Path.Combine(xdgDataHome, "fonts"));
+        else if (!string.IsNullOrEmpty(home))
+            dirs.Add(Path.Combine(home, ".local", "share", "fonts"));
+
+        dirs.Add("/usr/local/share/fonts");
+        dirs.Add("/usr/share/fonts");
+    }
+
+    dirs.Add(Directory.GetCurrentDirectory());
+    return dirs;
+}
+
 // ── scan-fonts [dir ...] ────────────────────────────────────────────────────
 static int RunScanFonts(string[] args)
 {
@@ -465,7 +508,7 @@ static int RunScanFonts(string[] args)
 
     var dirs = args.Length > 0
         ? args.Select(Path.GetFullPath).ToList()
-        : new List<string> { @"C:\Windows\Fonts", Directory.GetCurrentDirectory() };
+        : DefaultFontDirs();
 
     var scanner = new FontDiscoveryService();
     var found = scanner.ScanForModcompatFonts(dirs);

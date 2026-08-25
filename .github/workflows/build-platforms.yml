@@ -1,0 +1,116 @@
+name: build-platforms
+
+on:
+  push:
+    tags: ['*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: Linux (tar/deb/rpm/AppImage)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y rpm
+      - name: Build packages
+        run: bash scripts/build-linux.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-packages
+          path: |
+            dist/*.tar.xz
+            dist/*.deb
+            dist/*.rpm
+            dist/*.AppImage
+          if-no-files-found: error
+
+  macos:
+    name: macOS (app/dmg)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build bundles
+        run: bash scripts/build-macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-packages
+          path: |
+            dist/*.dmg
+            dist/*.tar.gz
+          if-no-files-found: error
+
+  freebsd:
+    name: FreeBSD (tar)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build in FreeBSD VM
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          prepare: pkg install -y dotnet bash
+          run: |
+            bash scripts/build-bsd.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: freebsd-packages
+          path: dist/fModLoader-*-freebsd-x64.tar.xz
+          if-no-files-found: warn
+
+  windows:
+    name: Windows (zip)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Publish win-x64
+        run: |
+          dotnet publish app/fModLoader.csproj -c Release -f net8.0 -r win-x64 --self-contained true -o dist/win-x64
+          dotnet publish cli/fModLoader_CLI.csproj -c Release -f net8.0 -r win-x64 --self-contained true -o dist/win-x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-package
+          path: dist/win-x64/*
+          if-no-files-found: error
+
+  flatpak:
+    name: Flatpak
+    runs-on: ubuntu-22.04
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-24.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: fModLoader-${{ github.ref_name }}.flatpak
+          manifest-path: packaging/flatpak/com.nexustribarixa.fModLoader.yml
+          run-tests: false
+          cache-key: flatpak-builder-${{ github.sha }}
+
+  snap:
+    name: Snap
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Place snapcraft.yaml at project root
+        run: cp packaging/snap/snapcraft.yaml .
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+      - uses: actions/upload-artifact@v4
+        with:
+          name: snap-package
+          path: ${{ steps.snapcraft.outputs.snap }}
+          if-no-files-found: error
