@@ -64,7 +64,7 @@ EOF
     fi
 
     # ── .rpm ────────────────────────────────────────────────────────────
-    if have rpmbuild; then
+    if have rpmbuild && [ -f "/usr/lib/rpm/platform/$(RPM_ARCH "$RID")-linux/macros" ]; then
         RPROOT="$HOME/rpmbuild"
         mkdir -p "$RPROOT"/{BUILD,SOURCES,SPECS,RPMS,SRPMS}
         stage_tree "$RID" "$DIST/stage-rpm"
@@ -104,7 +104,11 @@ EOF
         find "$RPROOT/RPMS" -name 'fmodloader-*.rpm' -exec cp {} "$DIST/" \;
         ok "rpm -> $DIST"
     else
-        warn "rpmbuild not found — skipping .rpm"
+        if ! have rpmbuild; then
+            warn "rpmbuild not found — skipping .rpm"
+        else
+            warn "No $(RPM_ARCH "$RID") rpm platform macros — skipping cross-arch .rpm"
+        fi
     fi
 
     # ── AppImage (x64 only) ─────────────────────────────────────────────

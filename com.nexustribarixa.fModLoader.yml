@@ -15,6 +15,9 @@ finish-args:
 modules:
   - name: fModLoader
     buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
     build-commands:
       - |
         set -e
