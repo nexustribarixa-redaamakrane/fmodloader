@@ -64,7 +64,9 @@ EOF
     fi
 
     # ── .rpm ────────────────────────────────────────────────────────────
-    if have rpmbuild && [ -f "/usr/lib/rpm/platform/$(RPM_ARCH "$RID")-linux/macros" ]; then
+    HOST_ARCH=$(uname -m)
+    RPM_TARGET="$(RPM_ARCH "$RID")"
+    if have rpmbuild && [ "$RPM_TARGET" = "$HOST_ARCH" ]; then
         RPROOT="$HOME/rpmbuild"
         mkdir -p "$RPROOT"/{BUILD,SOURCES,SPECS,RPMS,SRPMS}
         stage_tree "$RID" "$DIST/stage-rpm"
@@ -107,7 +109,7 @@ EOF
         if ! have rpmbuild; then
             warn "rpmbuild not found — skipping .rpm"
         else
-            warn "No $(RPM_ARCH "$RID") rpm platform macros — skipping cross-arch .rpm"
+            warn "Skipping .rpm for non-native arch ($RID on $HOST_ARCH host)"
         fi
     fi
 
