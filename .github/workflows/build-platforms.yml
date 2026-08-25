@@ -96,7 +96,7 @@ jobs:
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: fModLoader-${{ github.ref_name }}.flatpak
-          manifest-path: packaging/flatpak/com.nexustribarixa.fModLoader.yml
+          manifest-path: com.nexustribarixa.fModLoader.yml
           run-tests: false
           cache-key: flatpak-builder-${{ github.sha }}
 

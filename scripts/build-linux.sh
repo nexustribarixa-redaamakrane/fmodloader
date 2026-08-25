@@ -99,8 +99,8 @@ cp -r usr %{buildroot}/
 /usr/share/icons/hicolor/scalable/apps/fmodloader.svg
 /usr/share/metainfo/com.nexustribarixa.fModLoader.metainfo.xml
 EOF
-        rpmbuild -bb --quiet "$RPROOT/SPECS/fmodloader.spec" >/dev/null 2>&1 || \
-            rpmbuild -bb "$RPROOT/SPECS/fmodloader.spec"
+        rpmbuild -bb --quiet --target "$(RPM_ARCH "$RID")" "$RPROOT/SPECS/fmodloader.spec" >/dev/null 2>&1 || \
+            rpmbuild -bb --target "$(RPM_ARCH "$RID")" "$RPROOT/SPECS/fmodloader.spec"
         find "$RPROOT/RPMS" -name 'fmodloader-*.rpm' -exec cp {} "$DIST/" \;
         ok "rpm -> $DIST"
     else

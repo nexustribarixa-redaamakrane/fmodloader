@@ -23,8 +23,8 @@ pack_tar() {
 GEN="$DIST/unix-generic"
 rm -rf "$GEN"
 log "=== unix-generic (framework-dependent) ==="
-dotnet publish "$FML_ROOT/cli/fModLoader_CLI.csproj" -c Release -f net8.0 -p:UseAppHost=false -o "$GEN"
-dotnet publish "$FML_ROOT/app/fModLoader.csproj" -c Release -f net8.0 -p:UseAppHost=false -o "$GEN"
+dotnet publish "$FML_ROOT/cli/fModLoader_CLI.csproj" -c Release -f net8.0 --self-contained false -p:PublishSingleFile=false -p:UseAppHost=false -o "$GEN"
+dotnet publish "$FML_ROOT/app/fModLoader.csproj" -c Release -f net8.0 --self-contained false -p:PublishSingleFile=false -p:UseAppHost=false -o "$GEN"
 cat > "$GEN/README.txt" <<EOF
 fModLoader $VERSION — generic Unix build
 

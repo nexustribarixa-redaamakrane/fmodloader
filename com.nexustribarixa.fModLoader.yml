@@ -1,0 +1,35 @@
+id: com.nexustribarixa.fModLoader
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.dotnet8
+command: fModLoader
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=home
+modules:
+  - name: fModLoader
+    buildsystem: simple
+    build-commands:
+      - |
+        set -e
+        export DOTNET_CLI_TELEMETRY_OPTOUT=1
+        export DOTNET_ROOT=/usr/lib/sdk/dotnet8
+        export PATH="$DOTNET_ROOT/bin:$PATH"
+        echo "PWD=$(pwd)"
+        ls -la
+        ls app cli core
+        dotnet publish app/fModLoader.csproj -c Release -f net8.0 -r linux-x64 --self-contained true -p:PublishSingleFile=true -o /app/bin
+        dotnet publish cli/fModLoader_CLI.csproj -c Release -f net8.0 -r linux-x64 --self-contained true -p:PublishSingleFile=true -o /app/bin
+        install -Dm755 packaging/linux/fmodloader.desktop /app/share/applications/fmodloader.desktop
+        install -Dm644 assets/fmodloader.svg /app/share/icons/hicolor/scalable/apps/fmodloader.svg
+        install -Dm644 packaging/linux/fmodloader.metainfo.xml /app/share/metainfo/com.nexustribarixa.fModLoader.metainfo.xml
+        ln -s /app/bin/fModLoader /app/bin/fmodloader
+    sources:
+      - type: dir
+        path: .
