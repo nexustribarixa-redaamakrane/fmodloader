@@ -1,3 +1,5 @@
+param([string]$Browser)
+
 # SVG → PNG → ICO conversion pipeline for fModLoader icons
 # Uses Chrome headless for SVG→PNG rendering and System.Drawing for PNG→ICO
 # Usage: .\assets\convert_icons.ps1
@@ -12,9 +14,26 @@ $TempDir   = Join-Path $AssetsDir "_iconbuild"
 if (Test-Path $TempDir) { Remove-Item $TempDir -Recurse -Force }
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
-$Chrome = "C:\Program Files\Google\Chrome\Application\chrome.exe"
-if (-not (Test-Path $Chrome)) {
-    $Chrome = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+$browserCommand = if (-not $Browser) {
+    Get-Command chrome.exe -ErrorAction SilentlyContinue
+}
+if (-not $Browser -and -not $browserCommand) {
+    $browserCommand = Get-Command msedge.exe -ErrorAction SilentlyContinue
+}
+if (-not $Browser -and $browserCommand) {
+    $Browser = $browserCommand.Source
+}
+if (-not $Browser) {
+    $browserCandidates = @(
+        (Join-Path $env:ProgramFiles "Google\Chrome\Application\chrome.exe"),
+        (Join-Path ${env:ProgramFiles(x86)} "Microsoft\Edge\Application\msedge.exe")
+    )
+    $Browser = $browserCandidates |
+        Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) } |
+        Select-Object -First 1
+}
+if (-not $Browser -or -not (Test-Path -LiteralPath $Browser -PathType Leaf)) {
+    throw "Chrome or Edge not found; pass -Browser <path> or add the browser to PATH"
 }
 
 # Map SVG base names → ICO base names
@@ -74,7 +93,7 @@ $svgContent
         "--screenshot=""$pngPath""",
         """$fileUri"""
     )
-    Start-Process -FilePath $Chrome -ArgumentList $argList -Wait -NoNewWindow | Out-Null
+    Start-Process -FilePath $Browser -ArgumentList $argList -Wait -NoNewWindow | Out-Null
 
     if (-not (Test-Path $pngPath)) {
         Write-Host "  ERROR: PNG render failed for $svgName" -ForegroundColor Red

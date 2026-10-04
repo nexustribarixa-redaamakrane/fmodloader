@@ -17,7 +17,8 @@ public class InstallerConfig
 
     // ── User choices ────────────────────────────────────────────────────────
     public string Language { get; set; } = "English";
-    public string TargetDirectory { get; set; } = @"C:\Program Files\fModLoader";
+    public string TargetDirectory { get; set; } = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "fModLoader");
     public string StartMenuGroup { get; set; } = "fModLoader";
     public bool CreateStartMenu { get; set; } = true;
 
