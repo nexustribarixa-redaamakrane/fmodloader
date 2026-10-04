@@ -2,13 +2,13 @@
 
 <div align="center">
 
-![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.65%20BETA-cc1a1a?style=for-the-badge&logo=cplusplus&logoColor=white)
+![fModLoader Banner](https://img.shields.io/badge/fModLoader-v1.0.65%20BETA-cc1a1a?style=for-the-badge&logo=dotnet&logoColor=white)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=for-the-badge)
-![C++](https://img.shields.io/badge/C%2B%2B-AvaloniaUI-blue?style=for-the-badge)
+![C#](https://img.shields.io/badge/C%23-AvaloniaUI-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 ![Status](https://img.shields.io/badge/status-BETA-orange?style=for-the-badge)
 
 **A sleek, open-source desktop utility for dynamic font glyph modification.**
-Built with a secure C++ (AvaloniaUI) architecture.
+Built with a secure C# (.NET + AvaloniaUI) architecture.
 
 *Open-source • Vibecoded • Community-driven*
 
@@ -151,7 +151,7 @@ fmodloader/
 
 ## Prerequisites
 
-- **C++ / AvaloniaUI** — Application framework & UI
+- **C# / AvaloniaUI** — Application framework & UI
 - **.NET SDK 6.0, 7.0 or 8.0** — Build toolchain
 
 ```bash
@@ -281,7 +281,7 @@ bash scripts/build-bsd.sh          # FreeBSD / generic Unix
 
 Created affectionately by **Nexus Tribarixa** ([@nexustribarixa-redaamakrane](https://github.com/nexustribarixa-redaamakrane)).
 
-We actively need community help! Whether you're a font engineer, C++ developer, UI designer, or enthusiastic tester — your contribution matters:
+We actively need community help! Whether you're a font engineer, C# developer, UI designer, or enthusiastic tester — your contribution matters:
 
 - 🐛 [Report bugs](https://github.com/nexustribarixa-redaamakrane/fmodloader/issues)
 - 🔀 Submit pull requests
